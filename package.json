@@ -1,0 +1,16 @@
+{
+  "name": "fierifiction",
+  "version": "1.0.0",
+  "description": "Stories from Flavortown",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shahkashani/fierifiction.git"
+  },
+  "author": "Shah Kashani",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shahkashani/fierifiction/issues"
+  },
+  "homepage": "https://github.com/shahkashani/fierifiction#readme"
+}
