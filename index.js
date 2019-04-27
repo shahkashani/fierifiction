@@ -131,7 +131,10 @@ class FieriFiction {
       },
       json: true
     });
-    return this.getFullSentences(req.output || '');
+    if (!req || !req.output) {
+      return null;
+    }
+    return this.getFullSentences(req.output);
   }
 
   async postVideo(story, image, tags, sourceUrl) {
@@ -159,10 +162,14 @@ class FieriFiction {
     unlinkSync(mp4);
   }
 
-  async post(image, captions, tags = [], reblogInfo = {}) {
+  async post(image, captions, tags = [], sourceUrl = null, reblogInfo = null) {
     try {
       const story = await this.generateStory(captions);
-      if (reblogInfo.postId && reblogInfo.blogName) {
+      if (!story || story.length === 0) {
+        console.log('💥 Got no story, so leaving');
+        process.exit(0);
+      }
+      if (reblogInfo) {
         await this.reblogPost(
           reblogInfo.postId,
           reblogInfo.blogName,
@@ -170,7 +177,7 @@ class FieriFiction {
           story
         );
       }
-      await this.postVideo(story, image, tags, reblogInfo.url);
+      await this.postVideo(story, image, tags, sourceUrl);
     } catch (err) {
       console.log(`💥 Something borked: ${err}`);
     }
