@@ -134,7 +134,7 @@ class FieriFiction {
     return this.getFullSentences(req.output || '');
   }
 
-  async postVideo(story, image, tags) {
+  async postVideo(story, image, tags, sourceUrl) {
     const mp3 = `${image}.mp3`;
     const mp4 = `${image}.mp4`;
 
@@ -145,7 +145,8 @@ class FieriFiction {
     const videoPost = await this.client.createVideoPost(this.blogName, {
       data64: video.toString('base64'),
       tags: tags.join(','),
-      caption: story
+      caption: story,
+      source_url: sourceUrl
     });
 
     console.log(
@@ -158,10 +159,10 @@ class FieriFiction {
     unlinkSync(mp4);
   }
 
-  async post(image, captions, tags = [], reblogInfo = null) {
+  async post(image, captions, tags = [], reblogInfo = {}) {
     try {
       const story = await this.generateStory(captions);
-      if (reblogInfo) {
+      if (reblogInfo.postId && reblogInfo.blogName) {
         await this.reblogPost(
           reblogInfo.postId,
           reblogInfo.blogName,
@@ -169,7 +170,7 @@ class FieriFiction {
           story
         );
       }
-      await this.postVideo(story, image, tags);
+      await this.postVideo(story, image, tags, reblogInfo.url);
     } catch (err) {
       console.log(`💥 Something borked: ${err}`);
     }
