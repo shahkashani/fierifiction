@@ -261,7 +261,8 @@ class FieriFiction {
     const mp3 = `${image}.mp3`;
     const mp4 = `${image}.mp4`;
 
-    await this.textToSpeech(story, mp3);
+    // await this.textToSpeech(story, mp3);
+    await this.generateAudio(story, mp3);
     this.createVideo(image, mp3, mp4);
     this.addSoundtrack(image, mp4);
 
