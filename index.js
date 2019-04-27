@@ -64,8 +64,10 @@ class FieriFiction {
   createVideo(image, audio, output) {
     console.log('\n📽️  Generating video');
 
+    const loop = image.endsWith('.gif') ? '-ignore_loop 0' : '-loop 1';
+
     return this.execCmd(
-      `ffmpeg -i "${audio}" -ignore_loop 0 -i "${image}" -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -shortest -strict -2 -c:v libx264 -threads 4 -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -y "${output}"`
+      `ffmpeg -i "${audio}" ${loop} -i "${image}" -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -shortest -strict -2 -c:v libx264 -threads 4 -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -y "${output}"`
     );
   }
 
