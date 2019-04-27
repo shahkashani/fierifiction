@@ -6,6 +6,13 @@ const { exec } = require('shelljs');
 const WATSON_URL =
   'https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize';
 
+const WATSON_VOICES = [
+  'en-GB_KateVoice',
+  'en-US_AllisonVoice',
+  'en-US_LisaVoice',
+  'en-US_MichaelVoice'
+];
+
 class FieriFiction {
   constructor({
     tumblrConsumerKey = null,
@@ -100,6 +107,9 @@ class FieriFiction {
       method: 'POST',
       headers: headers,
       body: dataString,
+      qs: {
+        voice: WATSON_VOICES[Math.floor(Math.random() * WATSON_VOICES.length)]
+      },
       auth: {
         user: 'apikey',
         pass: this.watsonApiKey
