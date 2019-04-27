@@ -14,6 +14,9 @@
   },
   "homepage": "https://github.com/shahkashani/fierifiction#readme",
   "dependencies": {
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "shelljs": "^0.8.3",
     "tumblr.js": "^2.0.0"
   }
 }
