@@ -74,11 +74,10 @@ class FieriFiction {
     return output.trim();
   }
 
-  addSoundtrack(input, volume = 0.5, trim = 3) {
-    console.log('\n🎷 Adding music');
-
+  addSoundtrack(input, useLoop = null, volume = 0.5, trim = 3) {
+    const loop = useLoop || this.getRandom(this.loops);
+    console.log(`\n🎷 Adding music: ${loop}`);
     const len = Math.floor(this.getVideoLength(input) - trim);
-    const loop = this.getRandom(this.loops);
     const cmd = `ffmpeg -i "${input}" -vf trim=0:15 -filter_complex "amovie='${loop}':loop=999,volume=${volume}[s];[0][s]amix=duration=shortest" -t ${len} -y "temp-${input}" && rm "${input}" && mv "temp-${input}" "${input}"`;
 
     this.execCmd(cmd);

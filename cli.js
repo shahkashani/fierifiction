@@ -6,11 +6,11 @@ const argv = require('yargs')
   .required('mp3')
   .required('output').argv;
 
-const { mp3, gif, output } = argv;
+const { mp3, gif, loop, output } = argv;
 
 const ff = new FieriFiction();
 
 (async function() {
   await ff.createVideo(gif, mp3, output);
-  ff.addSoundtrack(output);
+  ff.addSoundtrack(output, loop);
 })();
