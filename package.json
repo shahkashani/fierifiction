@@ -12,5 +12,8 @@
   "bugs": {
     "url": "https://github.com/shahkashani/fierifiction/issues"
   },
-  "homepage": "https://github.com/shahkashani/fierifiction#readme"
+  "homepage": "https://github.com/shahkashani/fierifiction#readme",
+  "dependencies": {
+    "tumblr.js": "^2.0.0"
+  }
 }
