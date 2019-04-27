@@ -55,7 +55,7 @@ class FieriFiction {
   }
 
   createVideo(image, audio, output) {
-    console.log('\n📽️ Generating video');
+    console.log('\n📽️  Generating video');
 
     return this.execCmd(
       `ffmpeg -i "${audio}" -ignore_loop 0 -i "${image}" -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -shortest -strict -2 -c:v libx264 -threads 4 -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -y "${output}"`
@@ -74,6 +74,11 @@ class FieriFiction {
       reblog_key: reblogKey,
       comment: text
     });
+    console.log(
+      `👀 Go check it out at https://${this.blogName}.tumblr.com/post/${
+        response.id
+      }`
+    );
     return response;
   }
 
@@ -134,7 +139,7 @@ class FieriFiction {
     });
 
     console.log(
-      `👀 Video uploaded to https://${this.blogName}.tumblr.com/post/${
+      `👀 Go check it out at https://${this.blogName}.tumblr.com/post/${
         videoPost.id
       }`
     );
