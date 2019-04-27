@@ -2,6 +2,7 @@ const tumblr = require('tumblr.js');
 const request = require('request-promise');
 const { writeFileSync, readFileSync, unlinkSync } = require('fs');
 const { exec } = require('shelljs');
+const { glob } = require('glob');
 
 const WATSON_URL =
   'https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize';
@@ -24,7 +25,7 @@ class FieriFiction {
     audioGeneratorUrl = null,
     watsonApiKey = null,
     textLength = 100
-  }) {
+  } = {}) {
     this.client = tumblr.createClient({
       token: tumblrTokenKey,
       token_secret: tumblrTokenSecret,
@@ -38,6 +39,7 @@ class FieriFiction {
     this.audioGeneratorUrl = audioGeneratorUrl;
     this.textLength = textLength;
     this.watsonApiKey = watsonApiKey;
+    this.loops = glob.sync(`${__dirname}/loops/*.mp3`);
   }
 
   captionsToString(captions) {
@@ -59,6 +61,27 @@ class FieriFiction {
       console.log(`🐞 Oops: ${result.stderr}\n> ${cmd}`);
     }
     return result;
+  }
+
+  getRandom(array) {
+    return array[Math.floor(Math.random() * array.length)];
+  }
+
+  getVideoLength(file) {
+    const output = this.execCmd(
+      `ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${file}"`
+    );
+    return output.trim();
+  }
+
+  addSoundtrack(input, volume = 0.5, trim = 3) {
+    console.log('\n🎷 Adding music');
+
+    const len = Math.floor(this.getVideoLength(input) - trim);
+    const loop = this.getRandom(this.loops);
+    const cmd = `ffmpeg -i "${input}" -vf trim=0:15 -filter_complex "amovie='${loop}':loop=999,volume=${volume}[s];[0][s]amix=duration=shortest" -t ${len} -y "temp-${input}" && rm "${input}" && mv "temp-${input}" "${input}"`;
+
+    this.execCmd(cmd);
   }
 
   createVideo(image, audio, output) {
@@ -110,7 +133,7 @@ class FieriFiction {
       headers: headers,
       body: dataString,
       qs: {
-        voice: WATSON_VOICES[Math.floor(Math.random() * WATSON_VOICES.length)]
+        voice: this.getRandom(WATSON_VOICES)
       },
       auth: {
         user: 'apikey',
@@ -145,6 +168,7 @@ class FieriFiction {
 
     await this.generateAudio(story, mp3);
     this.createVideo(image, mp3, mp4);
+    this.addSoundtrack(mp4);
 
     const video = readFileSync(mp4);
     const videoPost = await this.client.createVideoPost(this.blogName, {
