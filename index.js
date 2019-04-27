@@ -284,13 +284,18 @@ class FieriFiction {
   }
 
   async post(image, captions, tags = [], sourceUrl = null, reblogInfo = null) {
+    let story;
     try {
-      const story = await this.generateStory(captions);
+      story = await this.generateStory(captions);
       if (!story || story.length === 0) {
         console.log('💥 Got no story, so leaving');
         process.exit(0);
       }
-      if (reblogInfo) {
+      await this.postVideo(story, image, tags, sourceUrl);
+    } catch (err) {
+      console.log(`💥 Something borked: ${err}`);
+      if (reblogInfo && story) {
+        console.log(`💥 Trying to reblog instead as a last-ditch effort`);
         await this.reblogPost(
           reblogInfo.postId,
           reblogInfo.blogName,
@@ -298,9 +303,6 @@ class FieriFiction {
           story
         );
       }
-      await this.postVideo(story, image, tags, sourceUrl);
-    } catch (err) {
-      console.log(`💥 Something borked: ${err}`);
     }
   }
 }
