@@ -12,5 +12,5 @@ const ff = new FieriFiction();
 
 (async function() {
   await ff.createVideo(gif, mp3, output);
-  ff.addSoundtrack(output, loop);
+  ff.addSoundtrack(gif, output, loop);
 })();

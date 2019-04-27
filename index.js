@@ -74,11 +74,16 @@ class FieriFiction {
     return output.trim();
   }
 
-  addSoundtrack(input, useLoop = null, trim = 3) {
-    const loop = useLoop || this.getRandom(this.loops);
-    console.log(`\n🎷 Adding music: ${loop}`);
-    const len = Math.floor(this.getVideoLength(input) - trim);
-    const cmd = `ffmpeg -i "${input}" -filter_complex "amovie='${loop}':loop=999,loudnorm[s];[0][s]amix=duration=shortest" -t ${len} -y "temp-${input}" && rm "${input}" && mv "temp-${input}" "${input}"`;
+  isGif(file) {
+    return file.endsWith('.gif');
+  }
+
+  addSoundtrack(image, video, loop = null) {
+    const useLoop = loop || this.getRandom(this.loops);
+    const trim = this.isGif(image) ? 3 : 1;
+    console.log(`\n🎷 Adding music: ${useLoop}`);
+    const len = Math.floor(this.getVideoLength(video) - trim);
+    const cmd = `ffmpeg -i "${video}" -filter_complex "amovie='${useLoop}':loop=999,loudnorm[s];[0][s]amix=duration=shortest" -t ${len} -y "temp-${video}" && rm "${video}" && mv "temp-${video}" "${video}"`;
 
     this.execCmd(cmd);
   }
@@ -86,7 +91,7 @@ class FieriFiction {
   createVideo(image, audio, output) {
     console.log('\n📽️  Generating video');
 
-    const loop = image.endsWith('.gif') ? '-ignore_loop 0' : '-loop 1';
+    const loop = this.isGif(image) ? '-ignore_loop 0' : '-loop 1';
 
     return this.execCmd(
       `ffmpeg -i "${audio}" ${loop} -i "${image}" -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -shortest -strict -2 -c:v libx264 -threads 4 -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -y "${output}"`
@@ -167,7 +172,7 @@ class FieriFiction {
 
     await this.generateAudio(story, mp3);
     this.createVideo(image, mp3, mp4);
-    this.addSoundtrack(mp4);
+    this.addSoundtrack(image, mp4);
 
     const video = readFileSync(mp4);
     const videoPost = await this.client.createVideoPost(this.blogName, {
