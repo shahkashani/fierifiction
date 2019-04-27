@@ -14,6 +14,64 @@ const WATSON_VOICES = [
   'en-US_MichaelVoice'
 ];
 
+const VOICES = [
+  {
+    languageCode: 'en-gb',
+    name: 'en-GB-Wavenet-A',
+    ssmlGender: 'FEMALE'
+  },
+  {
+    languageCode: 'en-gb',
+    name: 'en-GB-Wavenet-B',
+    ssmlGender: 'MALE'
+  },
+  {
+    languageCode: 'en-gb',
+    name: 'en-GB-Wavenet-C',
+    ssmlGender: 'FEMALE'
+  },
+  {
+    languageCode: 'en-gb',
+    name: 'en-GB-Wavenet-D',
+    ssmlGender: 'MALE'
+  },
+  {
+    languageCode: 'en-gb',
+    name: 'en-GB-Wavenet-D',
+    ssmlGender: 'MALE'
+  },
+  {
+    languageCode: 'en-us',
+    name: 'en-US-Wavenet-A',
+    ssmlGender: 'MALE'
+  },
+  {
+    languageCode: 'en-us',
+    name: 'en-US-Wavenet-B',
+    ssmlGender: 'MALE'
+  },
+  {
+    languageCode: 'en-us',
+    name: 'en-US-Wavenet-C',
+    ssmlGender: 'FEMALE'
+  },
+  {
+    languageCode: 'en-us',
+    name: 'en-US-Wavenet-D',
+    ssmlGender: 'MALE'
+  },
+  {
+    languageCode: 'en-us',
+    name: 'en-US-Wavenet-E',
+    ssmlGender: 'FEMALE'
+  },
+  {
+    languageCode: 'en-us',
+    name: 'en-US-Wavenet-F',
+    ssmlGender: 'FEMALE'
+  }
+];
+
 class FieriFiction {
   constructor({
     tumblrConsumerKey = null,
@@ -24,6 +82,7 @@ class FieriFiction {
     textGeneratorUrl = null,
     audioGeneratorUrl = null,
     watsonApiKey = null,
+    gcloudAccessToken = null,
     textLength = 100
   } = {}) {
     this.client = tumblr.createClient({
@@ -39,6 +98,7 @@ class FieriFiction {
     this.audioGeneratorUrl = audioGeneratorUrl;
     this.textLength = textLength;
     this.watsonApiKey = watsonApiKey;
+    this.gcloudAccessToken = gcloudAccessToken;
     this.loops = glob.sync(`${__dirname}/loops/*.mp3`);
   }
 
@@ -118,6 +178,37 @@ class FieriFiction {
     return response;
   }
 
+  async textToSpeech(text, output) {
+    console.log('\n🕋 Synthesizing');
+
+    const headers = {
+      Authorization: `Bearer ${this.gcloudAccessToken}`,
+      'Content-Type': 'application/json; charset=utf-8'
+    };
+
+    const dataString = JSON.stringify({
+      input: {
+        text
+      },
+      voice: this.getRandom(VOICES),
+      audioConfig: {
+        audioEncoding: 'MP3'
+      }
+    });
+
+    const options = {
+      url: 'https://texttospeech.googleapis.com/v1/text:synthesize',
+      method: 'POST',
+      headers: headers,
+      body: dataString
+    };
+
+    const response = await request(options);
+    const audioContent = JSON.parse(response).audioContent;
+    const buffer = Buffer.from(audioContent, 'base64');
+    writeFileSync(output, buffer);
+  }
+
   async generateAudio(text, output) {
     console.log('\n🕋 Talking to Watson');
 
@@ -170,7 +261,7 @@ class FieriFiction {
     const mp3 = `${image}.mp3`;
     const mp4 = `${image}.mp4`;
 
-    await this.generateAudio(story, mp3);
+    await this.textToSpeech(story, mp3);
     this.createVideo(image, mp3, mp4);
     this.addSoundtrack(image, mp4);
 
