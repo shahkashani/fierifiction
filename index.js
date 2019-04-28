@@ -156,14 +156,14 @@ class FieriFiction {
     );
   }
 
-  async reblogPost(reblogPostId, reblogName, tags, text) {
+  async reblogPost(text, postId, blogName, tags = []) {
     console.log('\n🔄 Reblogging text post');
-    const postInfo = await this.client.blogPosts(reblogName, {
-      id: reblogPostId
+    const postInfo = await this.client.blogPosts(blogName, {
+      id: postId
     });
     const reblogKey = postInfo.posts[0].reblog_key;
     const response = await this.client.reblogPost(this.blogName, {
-      id: reblogPostId,
+      id: postId,
       tags: tags.join(','),
       reblog_key: reblogKey,
       comment: text
@@ -263,7 +263,7 @@ class FieriFiction {
     return this.getFullSentences(req.output);
   }
 
-  async postVideo(story, image, tags, sourceUrl) {
+  async generateAndShareVideo(story, image, tags, sourceUrl) {
     const mp3 = `${image}.mp3`;
     const mp4 = `${image}.mp4`;
 
@@ -289,7 +289,13 @@ class FieriFiction {
     unlinkSync(mp4);
   }
 
-  async post(image, captions, tags = [], sourceUrl = null, reblogInfo = null) {
+  async postVideo(
+    image,
+    captions,
+    tags = [],
+    sourceUrl = null,
+    reblogInfo = null
+  ) {
     let story;
     try {
       story = await this.generateStory(captions);
@@ -297,18 +303,27 @@ class FieriFiction {
         console.error('💥 Got no story, so leaving');
         process.exit(0);
       }
-      await this.postVideo(story, image, tags, sourceUrl);
+      await this.generateAndShareVideo(story, image, tags, sourceUrl);
     } catch (err) {
       console.error(`💥 Something borked: ${err}`);
       if (reblogInfo && story) {
         console.warn(`💥 Trying to reblog instead as a last-ditch effort`);
         await this.reblogPost(
+          story,
           reblogInfo.postId,
           reblogInfo.blogName,
-          tags,
-          story
+          tags
         );
       }
+    }
+  }
+
+  async postText(captions, postId, blogName, tags = []) {
+    try {
+      const story = await this.generateStory(captions);
+      await this.reblogPost(story, postId, blogName, tags);
+    } catch (err) {
+      console.error(`💥 Something borked: ${err}`);
     }
   }
 }
