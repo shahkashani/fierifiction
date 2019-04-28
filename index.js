@@ -82,7 +82,6 @@ class FieriFiction {
     textGeneratorUrl = null,
     audioGeneratorUrl = null,
     watsonApiKey = null,
-    gcloudAccessToken = null,
     textLength = 100
   } = {}) {
     this.client = tumblr.createClient({
@@ -98,7 +97,6 @@ class FieriFiction {
     this.audioGeneratorUrl = audioGeneratorUrl;
     this.textLength = textLength;
     this.watsonApiKey = watsonApiKey;
-    this.gcloudAccessToken = gcloudAccessToken;
     this.loops = glob.sync(`${__dirname}/loops/*.mp3`);
   }
 
@@ -118,7 +116,7 @@ class FieriFiction {
   execCmd(cmd) {
     const result = exec(cmd, { silent: true });
     if (result.code !== 0) {
-      console.log(`🐞 Oops: ${result.stderr}\n> ${cmd}`);
+      console.error(`🐞 Oops: ${result.stderr}\n> ${cmd}`);
     }
     return result;
   }
@@ -181,8 +179,12 @@ class FieriFiction {
   async textToSpeech(text, output) {
     console.log('\n🕋 Synthesizing');
 
+    const token = this.execCmd(
+      'gcloud auth application-default print-access-token'
+    ).trim();
+
     const headers = {
-      Authorization: `Bearer ${this.gcloudAccessToken}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json; charset=utf-8'
     };
 
@@ -203,10 +205,14 @@ class FieriFiction {
       body: dataString
     };
 
-    const response = await request(options);
-    const audioContent = JSON.parse(response).audioContent;
-    const buffer = Buffer.from(audioContent, 'base64');
-    writeFileSync(output, buffer);
+    try {
+      const response = await request(options);
+      const audioContent = JSON.parse(response).audioContent;
+      const buffer = Buffer.from(audioContent, 'base64');
+      writeFileSync(output, buffer);
+    } catch (err) {
+      console.error(`💥 Could not save mp3 (with token: ${token}):`, err);
+    }
   }
 
   async generateAudio(text, output) {
@@ -261,8 +267,7 @@ class FieriFiction {
     const mp3 = `${image}.mp3`;
     const mp4 = `${image}.mp4`;
 
-    // await this.textToSpeech(story, mp3);
-    await this.generateAudio(story, mp3);
+    await this.textToSpeech(story, mp3);
     this.createVideo(image, mp3, mp4);
     this.addSoundtrack(image, mp4);
 
@@ -289,14 +294,14 @@ class FieriFiction {
     try {
       story = await this.generateStory(captions);
       if (!story || story.length === 0) {
-        console.log('💥 Got no story, so leaving');
+        console.error('💥 Got no story, so leaving');
         process.exit(0);
       }
       await this.postVideo(story, image, tags, sourceUrl);
     } catch (err) {
-      console.log(`💥 Something borked: ${err}`);
+      console.error(`💥 Something borked: ${err}`);
       if (reblogInfo && story) {
-        console.log(`💥 Trying to reblog instead as a last-ditch effort`);
+        console.warn(`💥 Trying to reblog instead as a last-ditch effort`);
         await this.reblogPost(
           reblogInfo.postId,
           reblogInfo.blogName,
