@@ -2,10 +2,12 @@ require('dotenv').config();
 
 const FieriFiction = require('./');
 
-const argv = require('yargs').usage('Usage: $0 <command> [options]').argv;
+const argv = require('yargs')
+  .boolean('nomusic')
+  .usage('Usage: $0 <command> [options]').argv;
 
 const { GCLOUD_ACCESS_TOKEN } = process.env;
-const { mp3, gif, loop, text, output } = argv;
+const { mp3, gif, loop, text, output, nomusic } = argv;
 
 const ff = new FieriFiction({
   gcloudAccessToken: GCLOUD_ACCESS_TOKEN
@@ -17,6 +19,8 @@ const ff = new FieriFiction({
   }
   if (gif && mp3 && output) {
     await ff.createVideo(gif, mp3, output);
-    ff.addSoundtrack(gif, output, loop);
+    if (!nomusic) {
+      ff.addSoundtrack(gif, output, loop);
+    }
   }
 })();
