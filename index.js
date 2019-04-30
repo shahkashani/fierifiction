@@ -4,16 +4,6 @@ const { writeFileSync, readFileSync, unlinkSync } = require('fs');
 const { exec } = require('shelljs');
 const { glob } = require('glob');
 
-const WATSON_URL =
-  'https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize';
-
-const WATSON_VOICES = [
-  'en-GB_KateVoice',
-  'en-US_AllisonVoice',
-  'en-US_LisaVoice',
-  'en-US_MichaelVoice'
-];
-
 const VOICES = [
   {
     languageCode: 'en-gb',
@@ -81,8 +71,9 @@ class FieriFiction {
     tumblrBlogName = null,
     textGeneratorUrl = null,
     audioGeneratorUrl = null,
-    watsonApiKey = null,
-    textLength = 100
+    textLength = 100,
+    speakingRate = 1,
+    pitch = 0
   } = {}) {
     this.client = tumblr.createClient({
       token: tumblrTokenKey,
@@ -96,7 +87,8 @@ class FieriFiction {
     this.textGeneratorUrl = textGeneratorUrl;
     this.audioGeneratorUrl = audioGeneratorUrl;
     this.textLength = textLength;
-    this.watsonApiKey = watsonApiKey;
+    this.speakingRate = speakingRate;
+    this.pitch = pitch;
     this.loops = glob.sync(`${__dirname}/loops/*.mp3`);
   }
 
@@ -194,7 +186,9 @@ class FieriFiction {
       },
       voice: this.getRandom(VOICES),
       audioConfig: {
-        audioEncoding: 'MP3'
+        audioEncoding: 'MP3',
+        speakingRate: this.speakingRate,
+        pitch: this.pitch
       }
     });
 
@@ -213,37 +207,6 @@ class FieriFiction {
     } catch (err) {
       console.error(`💥 Could not save mp3 (with token: ${token}):`, err);
     }
-  }
-
-  async generateAudio(text, output) {
-    console.log('\n🕋 Talking to Watson');
-
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'audio/mp3'
-    };
-
-    const dataString = JSON.stringify({
-      text
-    });
-
-    const options = {
-      encoding: null,
-      url: WATSON_URL,
-      method: 'POST',
-      headers: headers,
-      body: dataString,
-      qs: {
-        voice: this.getRandom(WATSON_VOICES)
-      },
-      auth: {
-        user: 'apikey',
-        pass: this.watsonApiKey
-      }
-    };
-
-    const response = await request(options);
-    writeFileSync(output, response);
   }
 
   async generateStory(captions) {
