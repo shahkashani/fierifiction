@@ -71,6 +71,7 @@ class FieriFiction {
     tumblrBlogName = null,
     textGeneratorUrl = null,
     audioGeneratorUrl = null,
+    googleCloudCredentials = null,
     textLength = 100,
     speakingRate = 1,
     pitch = 0
@@ -89,6 +90,7 @@ class FieriFiction {
     this.textLength = textLength;
     this.speakingRate = speakingRate;
     this.pitch = pitch;
+    this.googleCloudCredentials = googleCloudCredentials;
     this.loops = glob.sync(`${__dirname}/loops/*.mp3`);
   }
 
@@ -168,12 +170,26 @@ class FieriFiction {
     return response;
   }
 
+  // I truly hate Google Cloud's dependency on authentication files
+  execAuthGcloudCmd(cmd) {
+    if (!this.googleCloudCredentials) {
+      return this.execCmd(cmd).trim();
+    }
+    const tmpFile = '.creds.json';
+    writeFileSync(tmpFile, this.googleCloudCredentials);
+    const result = this.execCmd(
+      `GOOGLE_APPLICATION_CREDENTIALS=${tmpFile} ${cmd}`
+    ).trim();
+    unlinkSync(tmpFile);
+    return result;
+  }
+
   async textToSpeech(text, output) {
     console.log('\n🕋 Synthesizing');
 
-    const token = this.execCmd(
+    const token = this.execAuthGcloudCmd(
       'gcloud auth application-default print-access-token'
-    ).trim();
+    );
 
     const headers = {
       Authorization: `Bearer ${token}`,

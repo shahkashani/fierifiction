@@ -6,11 +6,14 @@ const argv = require('yargs')
   .boolean('nomusic')
   .usage('Usage: $0 <command> [options]').argv;
 
-const { GCLOUD_ACCESS_TOKEN } = process.env;
+const { GOOGLE_CLOUD_CREDENTIALS_BASE64 } = process.env;
 const { mp3, gif, loop, text, output, nomusic } = argv;
 
 const ff = new FieriFiction({
-  gcloudAccessToken: GCLOUD_ACCESS_TOKEN
+  googleCloudCredentials: Buffer.from(
+    GOOGLE_CLOUD_CREDENTIALS_BASE64,
+    'base64'
+  ).toString()
 });
 
 (async function() {
