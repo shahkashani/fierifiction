@@ -107,6 +107,13 @@ class FieriFiction {
     return string.slice(0, lastIndex + 1);
   }
 
+  closeQuotes(string) {
+    const count = (string.match(/\"/g) || []).length;
+    return count === 0 || count % 2 === 0
+      ? string
+      : string.replace(/([.!?])$/, '"$1');
+  }
+
   execCmd(cmd) {
     const result = exec(cmd, { silent: true });
     if (result.code !== 0) {
@@ -239,7 +246,7 @@ class FieriFiction {
     if (!req || !req.output) {
       return null;
     }
-    return this.getFullSentences(req.output);
+    return this.closeQuotes(this.getFullSentences(req.output));
   }
 
   async generateAndShareVideo(story, image, tags, sourceUrl) {
