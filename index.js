@@ -142,7 +142,7 @@ class FieriFiction {
     const trim = this.isGif(image) ? 3 : 1;
     console.log(`\n🎷 Adding music: ${useLoop}`);
     const len = Math.floor(this.getVideoLength(video) - trim);
-    const cmd = `ffmpeg -i "${video}" -filter_complex "amovie='${useLoop}':loop=999,loudnorm[s];[0][s]amix=duration=shortest" -t ${len} -y "temp-${video}" && rm "${video}" && mv "temp-${video}" "${video}"`;
+    const cmd = `ffmpeg -i "${video}" -filter_complex "amovie='${useLoop}':loop=999,loudnorm[s];[0][s]amix=duration=shortest" -t ${len} -y "${video}-temp.mp4" && rm "${video}" && mv "${video}-temp.mp4" "${video}"`;
 
     this.execCmd(cmd);
   }
