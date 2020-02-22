@@ -887,7 +887,7 @@ class FieriFiction {
     topK = 40,
     temperature = 1,
     speakingRate = 1,
-    pitch = 0,
+    pitch = 0
   } = {}) {
     this.client = tumblr.createClient({
       token: tumblrTokenKey,
@@ -1055,15 +1055,18 @@ class FieriFiction {
   }
 
   async generateStory(captions) {
-    console.log('\n💭 Talking to Dreamscape');
+    const params = {
+      length: this.textLength,
+      top_k: this.topK,
+      temperature: this.temperature
+    };
+    console.log(`\n💭 Talking to Dreamscape (${JSON.stringify(params)})`);
     const input = this.captionsToString(captions);
     const req = await request({
       uri: this.textGeneratorUrl,
       qs: {
         q: input,
-        length: this.textLength,
-        top_k: this.topK,
-        temperature: this.temperature,
+        ...params
       },
       json: true
     });
