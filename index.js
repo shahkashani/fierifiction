@@ -882,9 +882,12 @@ class FieriFiction {
     textGeneratorUrl = null,
     audioGeneratorUrl = null,
     googleCloudCredentials = null,
+    music = '*.mp3',
     textLength = 100,
+    topK = 40,
+    temperature = 1,
     speakingRate = 1,
-    pitch = 0
+    pitch = 0,
   } = {}) {
     this.client = tumblr.createClient({
       token: tumblrTokenKey,
@@ -900,8 +903,11 @@ class FieriFiction {
     this.textLength = textLength;
     this.speakingRate = speakingRate;
     this.pitch = pitch;
+    this.music = music;
+    this.topK = topK;
+    this.temperature = temperature;
     this.googleCloudCredentials = googleCloudCredentials;
-    this.loops = glob.sync(`${__dirname}/loops/*.mp3`);
+    this.loops = glob.sync(`${__dirname}/loops/${this.music}`);
   }
 
   captionsToString(captions) {
@@ -1055,7 +1061,9 @@ class FieriFiction {
       uri: this.textGeneratorUrl,
       qs: {
         q: input,
-        length: this.textLength
+        length: this.textLength,
+        top_k: this.topK,
+        temperature: this.temperature,
       },
       json: true
     });
