@@ -9,867 +9,867 @@ const VOICES = [
     languageCodes: ['ar-XA'],
     name: 'ar-XA-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ar-XA'],
     name: 'ar-XA-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ar-XA'],
     name: 'ar-XA-Wavenet-C',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['cs-CZ'],
     name: 'cs-CZ-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['da-DK'],
     name: 'da-DK-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['de-DE'],
     name: 'de-DE-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['de-DE'],
     name: 'de-DE-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['de-DE'],
     name: 'de-DE-Wavenet-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['de-DE'],
     name: 'de-DE-Wavenet-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['de-DE'],
     name: 'de-DE-Wavenet-E',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['el-GR'],
     name: 'el-GR-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-AU'],
     name: 'en-AU-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-AU'],
     name: 'en-AU-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-AU'],
     name: 'en-AU-Wavenet-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-AU'],
     name: 'en-AU-Wavenet-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-GB'],
     name: 'en-GB-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-GB'],
     name: 'en-GB-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-GB'],
     name: 'en-GB-Wavenet-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-GB'],
     name: 'en-GB-Wavenet-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-US'],
     name: 'en-US-Wavenet-A',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-US'],
     name: 'en-US-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-US'],
     name: 'en-US-Wavenet-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-US'],
     name: 'en-US-Wavenet-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-US'],
     name: 'en-US-Wavenet-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-US'],
     name: 'en-US-Wavenet-F',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fi-FI'],
     name: 'fi-FI-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-CA'],
     name: 'fr-CA-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-CA'],
     name: 'fr-CA-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-CA'],
     name: 'fr-CA-Wavenet-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-CA'],
     name: 'fr-CA-Wavenet-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-FR'],
     name: 'fr-FR-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-FR'],
     name: 'fr-FR-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-FR'],
     name: 'fr-FR-Wavenet-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-FR'],
     name: 'fr-FR-Wavenet-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-FR'],
     name: 'fr-FR-Wavenet-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['hu-HU'],
     name: 'hu-HU-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['it-IT'],
     name: 'it-IT-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['it-IT'],
     name: 'it-IT-Wavenet-B',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['it-IT'],
     name: 'it-IT-Wavenet-C',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['it-IT'],
     name: 'it-IT-Wavenet-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nb-NO'],
     name: 'nb-no-Wavenet-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nb-NO'],
     name: 'nb-NO-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nb-NO'],
     name: 'nb-NO-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nb-NO'],
     name: 'nb-NO-Wavenet-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nb-NO'],
     name: 'nb-NO-Wavenet-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nl-NL'],
     name: 'nl-NL-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nl-NL'],
     name: 'nl-NL-Wavenet-C',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nl-NL'],
     name: 'nl-NL-Wavenet-D',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nl-NL'],
     name: 'nl-NL-Wavenet-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nl-NL'],
     name: 'nl-NL-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pl-PL'],
     name: 'pl-PL-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pl-PL'],
     name: 'pl-PL-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pl-PL'],
     name: 'pl-PL-Wavenet-C',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pl-PL'],
     name: 'pl-PL-Wavenet-D',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pl-PL'],
     name: 'pl-PL-Wavenet-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pt-BR'],
     name: 'pt-BR-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pt-PT'],
     name: 'pt-PT-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pt-PT'],
     name: 'pt-PT-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pt-PT'],
     name: 'pt-PT-Wavenet-C',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pt-PT'],
     name: 'pt-PT-Wavenet-D',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ru-RU'],
     name: 'ru-RU-Wavenet-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ru-RU'],
     name: 'ru-RU-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ru-RU'],
     name: 'ru-RU-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ru-RU'],
     name: 'ru-RU-Wavenet-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ru-RU'],
     name: 'ru-RU-Wavenet-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['sk-SK'],
     name: 'sk-SK-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['sv-SE'],
     name: 'sv-SE-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['tr-TR'],
     name: 'tr-TR-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['tr-TR'],
     name: 'tr-TR-Wavenet-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['tr-TR'],
     name: 'tr-TR-Wavenet-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['tr-TR'],
     name: 'tr-TR-Wavenet-D',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['tr-TR'],
     name: 'tr-TR-Wavenet-E',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['uk-UA'],
     name: 'uk-UA-Wavenet-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['es-ES'],
     name: 'es-ES-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ar-XA'],
     name: 'ar-XA-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ar-XA'],
     name: 'ar-XA-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ar-XA'],
     name: 'ar-XA-Standard-C',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ar-XA'],
     name: 'ar-XA-Standard-D',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-FR'],
     name: 'fr-FR-Standard-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['it-IT'],
     name: 'it-IT-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ru-RU'],
     name: 'ru-RU-Standard-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ru-RU'],
     name: 'ru-RU-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ru-RU'],
     name: 'ru-RU-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ru-RU'],
     name: 'ru-RU-Standard-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['ru-RU'],
     name: 'ru-RU-Standard-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
 
   {
     languageCodes: ['nl-NL'],
     name: 'nl-NL-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nl-NL'],
     name: 'nl-NL-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nl-NL'],
     name: 'nl-NL-Standard-C',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nl-NL'],
     name: 'nl-NL-Standard-D',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nl-NL'],
     name: 'nl-NL-Standard-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['cs-CZ'],
     name: 'cs-CZ-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['el-GR'],
     name: 'el-GR-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050
+    naturalSampleRateHertz: 22050,
   },
   {
     languageCodes: ['pt-BR'],
     name: 'pt-BR-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['hu-HU'],
     name: 'hu-HU-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050
+    naturalSampleRateHertz: 22050,
   },
   {
     languageCodes: ['pl-PL'],
     name: 'pl-PL-Standard-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050
+    naturalSampleRateHertz: 22050,
   },
   {
     languageCodes: ['pl-PL'],
     name: 'pl-PL-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pl-PL'],
     name: 'pl-PL-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pl-PL'],
     name: 'pl-PL-Standard-C',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pl-PL'],
     name: 'pl-PL-Standard-D',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['sk-SK'],
     name: 'sk-SK-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['tr-TR'],
     name: 'tr-TR-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050
+    naturalSampleRateHertz: 22050,
   },
   {
     languageCodes: ['tr-TR'],
     name: 'tr-TR-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['tr-TR'],
     name: 'tr-TR-Standard-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['tr-TR'],
     name: 'tr-TR-Standard-D',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['tr-TR'],
     name: 'tr-TR-Standard-E',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['uk-UA'],
     name: 'uk-UA-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['da-DK'],
     name: 'da-DK-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fi-FI'],
     name: 'fi-FI-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pt-PT'],
     name: 'pt-PT-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pt-PT'],
     name: 'pt-PT-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pt-PT'],
     name: 'pt-PT-Standard-C',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['pt-PT'],
     name: 'pt-PT-Standard-D',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nb-NO'],
     name: 'nb-no-Standard-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050
+    naturalSampleRateHertz: 22050,
   },
   {
     languageCodes: ['nb-NO'],
     name: 'nb-NO-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nb-NO'],
     name: 'nb-NO-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nb-NO'],
     name: 'nb-NO-Standard-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['nb-NO'],
     name: 'nb-NO-Standard-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['sv-SE'],
     name: 'sv-SE-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050
+    naturalSampleRateHertz: 22050,
   },
   {
     languageCodes: ['en-GB'],
     name: 'en-GB-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-GB'],
     name: 'en-GB-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-GB'],
     name: 'en-GB-Standard-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-GB'],
     name: 'en-GB-Standard-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-US'],
     name: 'en-US-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-US'],
     name: 'en-US-Standard-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-US'],
     name: 'en-US-Standard-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-US'],
     name: 'en-US-Standard-E',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['de-DE'],
     name: 'de-DE-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['de-DE'],
     name: 'de-DE-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['de-DE'],
     name: 'de-DE-Standard-E',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-AU'],
     name: 'en-AU-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-AU'],
     name: 'en-AU-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-AU'],
     name: 'en-AU-Standard-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['en-AU'],
     name: 'en-AU-Standard-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-CA'],
     name: 'fr-CA-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-CA'],
     name: 'fr-CA-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-CA'],
     name: 'fr-CA-Standard-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-CA'],
     name: 'fr-CA-Standard-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-FR'],
     name: 'fr-FR-Standard-A',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-FR'],
     name: 'fr-FR-Standard-B',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-FR'],
     name: 'fr-FR-Standard-C',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['fr-FR'],
     name: 'fr-FR-Standard-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['it-IT'],
     name: 'it-IT-Standard-B',
     ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['it-IT'],
     name: 'it-IT-Standard-C',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
+    naturalSampleRateHertz: 24000,
   },
   {
     languageCodes: ['it-IT'],
     name: 'it-IT-Standard-D',
     ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000
-  }
+    naturalSampleRateHertz: 24000,
+  },
 ];
 
 class FieriFiction {
@@ -887,14 +887,14 @@ class FieriFiction {
     topK = 40,
     temperature = 1,
     speakingRate = 1,
-    pitch = 0
+    pitch = 0,
   } = {}) {
     this.client = tumblr.createClient({
       token: tumblrTokenKey,
       token_secret: tumblrTokenSecret,
       consumer_key: tumblrConsumerKey,
       consumer_secret: tumblrConsumerSecret,
-      returnPromises: true
+      returnPromises: true,
     });
 
     this.blogName = tumblrBlogName;
@@ -973,17 +973,39 @@ class FieriFiction {
     );
   }
 
+  getImage(images) {
+    if (images.length === 1) {
+      return images[0];
+    }
+    const firstImage = images[0];
+    const escapedFilenames = images.map((image) => `"${image}"`);
+
+    if (this.isGif(firstImage)) {
+      const combinedFileName = `${firstImage}-combined.gif`;
+      this.execCmd(
+        `convert ${escapedFilenames.join(' ')} "${combinedFileName}"`
+      );
+      return combinedFileName;
+    }
+
+    const combinedFileName = `${firstImage}-combined.png`;
+    this.execCmd(
+      `convert ${escapedFilenames.join(' ')} -append "${combinedFileName}"`
+    );
+    return combinedFileName;
+  }
+
   async reblogPost(text, postId, blogName, tags = []) {
     console.log('\n🔄 Reblogging text post');
     const postInfo = await this.client.blogPosts(blogName, {
-      id: postId
+      id: postId,
     });
     const reblogKey = postInfo.posts[0].reblog_key;
     const response = await this.client.reblogPost(this.blogName, {
       id: postId,
       tags: tags.join(','),
       reblog_key: reblogKey,
-      comment: text
+      comment: text,
     });
     console.log(
       `👀 Go check it out at https://${this.blogName}.tumblr.com/post/${response.id}`
@@ -1014,7 +1036,7 @@ class FieriFiction {
 
     const headers = {
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json; charset=utf-8'
+      'Content-Type': 'application/json; charset=utf-8',
     };
 
     const { languageCodes, ssmlGender, name } = this.getRandom(VOICES);
@@ -1022,26 +1044,26 @@ class FieriFiction {
     const paramVoice = {
       ssmlGender,
       name,
-      languageCode: languageCodes[0]
+      languageCode: languageCodes[0],
     };
 
     const dataString = JSON.stringify({
       input: {
-        text
+        text,
       },
       voice: paramVoice,
       audioConfig: {
         audioEncoding: 'MP3',
         speakingRate: this.speakingRate,
-        pitch: this.pitch
-      }
+        pitch: this.pitch,
+      },
     });
 
     const options = {
       url: 'https://texttospeech.googleapis.com/v1/text:synthesize',
       method: 'POST',
       headers: headers,
-      body: dataString
+      body: dataString,
     };
 
     try {
@@ -1058,7 +1080,7 @@ class FieriFiction {
     const params = {
       length: this.textLength,
       top_k: this.topK,
-      temperature: this.temperature
+      temperature: this.temperature,
     };
     console.log(`\n💭 Talking to Dreamscape (${JSON.stringify(params)})`);
     const input = this.captionsToString(captions);
@@ -1066,9 +1088,9 @@ class FieriFiction {
       uri: this.textGeneratorUrl,
       qs: {
         q: input,
-        ...params
+        ...params,
       },
-      json: true
+      json: true,
     });
     if (!req || !req.output) {
       return null;
@@ -1089,7 +1111,7 @@ class FieriFiction {
       data64: video.toString('base64'),
       tags: tags.join(','),
       caption: story,
-      source_url: sourceUrl
+      source_url: sourceUrl,
     });
 
     console.log(
@@ -1101,18 +1123,22 @@ class FieriFiction {
   }
 
   async postVideo(
-    image,
+    images,
     captions,
     tags = [],
     sourceUrl = null,
-    reblogInfo = null
+    reblogInfo = null,
+    useStory = false
   ) {
-    let story;
+    const image = this.getImage(images);
+    let story = useStory ? captions.join(' ') : null;
     try {
-      story = await this.generateStory(captions);
-      if (!story || story.length === 0) {
-        console.error('💥 Got no story, so leaving');
-        process.exit(0);
+      if (!story) {
+        story = await this.generateStory(captions);
+        if (!story || story.length === 0) {
+          console.error('💥 Got no story, so leaving');
+          process.exit(0);
+        }
       }
       await this.generateAndShareVideo(story, image, tags, sourceUrl);
     } catch (err) {
@@ -1129,9 +1155,11 @@ class FieriFiction {
     }
   }
 
-  async postText(captions, postId, blogName, tags = []) {
+  async postText(captions, postId, blogName, tags = [], useStory = false) {
     try {
-      const story = await this.generateStory(captions);
+      const story = useStory
+        ? captions.join(' ')
+        : await this.generateStory(captions);
       await this.reblogPost(story, postId, blogName, tags);
     } catch (err) {
       console.error(`💥 Something borked: ${err}`);
