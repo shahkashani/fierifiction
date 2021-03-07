@@ -477,7 +477,7 @@ class FieriFiction {
     const videoPost = await this.client.createVideoPost(this.blogName, {
       data64: video.toString('base64'),
       tags: tags.join(','),
-      caption: story.replace(/\/n/g, '<br />/n'),
+      caption: story.replace(/\n/g, '<br />\n'),
       source_url: sourceUrl,
     });
 
