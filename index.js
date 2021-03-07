@@ -216,7 +216,7 @@ class FieriFiction {
     }
     return captions
       .join(' ')
-      .replace(/\\n/gi, ' ')
+      .replace(/\n/gi, ' ')
       .replace(/\s{2,}/, ' ');
   }
 
