@@ -211,6 +211,9 @@ class FieriFiction {
   }
 
   captionsToString(captions) {
+    if (typeof captions === 'string') {
+      return captions;
+    }
     return captions
       .join(' ')
       .replace(/\\n/gi, ' ')
