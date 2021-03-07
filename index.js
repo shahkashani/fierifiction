@@ -419,38 +419,37 @@ class FieriFiction {
       console.log(`🎷 Grabbing a random track...`);
       return random;
     }
-    const query = this.getQuery(story);
+
+    const filename = `temp-${this.getQuery(story)
+      .toLowerCase()
+      .replace(/ /g, '-')}.mp3`;
+
+    let attempts = [];
+
+    for (let i = 4; i > 0; i -= 1) {
+      attempts.push(`${this.getQuery(story, i)} instrumental`);
+    }
+
+    for (let j = 4; j > 0; j -= 1) {
+      attempts.push(`${this.getQuery(story, j)}`);
+    }
+
     try {
-      const filename = `temp-${query.toLowerCase().replace(/ /g, '-')}.mp3`;
       let items = [];
-      console.log(`🎷 Searching for "${query} instrumental"...`);
-      const instrumental = await this.spotify.search({
-        query: `${query} instrumental`,
-        type: 'track',
-      });
-      items = instrumental.tracks.items;
-      if (items.length === 0) {
-        console.log('🎷 Trying without "instrumental" in the title...');
-        const songs = await this.spotify.search({
-          query,
+      while (attempts.length > 0 && items.length === 0) {
+        let query = attempts.shift();
+        console.log(`🎷 Searching for "${query}"...`);
+        const result = await this.spotify.search({
+          query: `${query} instrumental`,
           type: 'track',
         });
-        items = songs.tracks.items;
-      }
-      if (items.length === 0) {
-        console.log(`🎷 Did not find anything, trying just the first word...`);
-        const songs = await this.spotify.search({
-          query: this.getQuery(story, 1),
-          type: 'track',
-        });
-        items = songs.tracks.items;
+        items = result.tracks.items;
       }
       if (items.length === 0) {
         console.log(`🎷 Did not find anything, grabbing a random track...`);
         return random;
       }
       const { preview_url: url } = this.getRandom(items);
-
       try {
         const response = await request({
           url,
