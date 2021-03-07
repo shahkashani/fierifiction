@@ -1,5 +1,6 @@
 const tumblr = require('tumblr.js');
 const request = require('request-promise');
+const Spotify = require('node-spotify-api');
 const { writeFileSync, readFileSync, unlinkSync } = require('fs');
 const { exec } = require('shelljs');
 const { glob } = require('glob');
@@ -163,874 +164,6 @@ const EN_VOICES = [
   },
 ];
 
-const VOICES = [
-  {
-    languageCodes: ['ar-XA'],
-    name: 'ar-XA-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ar-XA'],
-    name: 'ar-XA-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ar-XA'],
-    name: 'ar-XA-Wavenet-C',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['cs-CZ'],
-    name: 'cs-CZ-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['da-DK'],
-    name: 'da-DK-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['de-DE'],
-    name: 'de-DE-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['de-DE'],
-    name: 'de-DE-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['de-DE'],
-    name: 'de-DE-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['de-DE'],
-    name: 'de-DE-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['de-DE'],
-    name: 'de-DE-Wavenet-E',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['el-GR'],
-    name: 'el-GR-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-A',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-F',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fi-FI'],
-    name: 'fi-FI-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-CA'],
-    name: 'fr-CA-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-CA'],
-    name: 'fr-CA-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-CA'],
-    name: 'fr-CA-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-CA'],
-    name: 'fr-CA-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-FR'],
-    name: 'fr-FR-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-FR'],
-    name: 'fr-FR-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-FR'],
-    name: 'fr-FR-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-FR'],
-    name: 'fr-FR-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-FR'],
-    name: 'fr-FR-Wavenet-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['hu-HU'],
-    name: 'hu-HU-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['it-IT'],
-    name: 'it-IT-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['it-IT'],
-    name: 'it-IT-Wavenet-B',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['it-IT'],
-    name: 'it-IT-Wavenet-C',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['it-IT'],
-    name: 'it-IT-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nb-NO'],
-    name: 'nb-no-Wavenet-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nb-NO'],
-    name: 'nb-NO-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nb-NO'],
-    name: 'nb-NO-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nb-NO'],
-    name: 'nb-NO-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nb-NO'],
-    name: 'nb-NO-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nl-NL'],
-    name: 'nl-NL-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nl-NL'],
-    name: 'nl-NL-Wavenet-C',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nl-NL'],
-    name: 'nl-NL-Wavenet-D',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nl-NL'],
-    name: 'nl-NL-Wavenet-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nl-NL'],
-    name: 'nl-NL-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pl-PL'],
-    name: 'pl-PL-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pl-PL'],
-    name: 'pl-PL-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pl-PL'],
-    name: 'pl-PL-Wavenet-C',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pl-PL'],
-    name: 'pl-PL-Wavenet-D',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pl-PL'],
-    name: 'pl-PL-Wavenet-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pt-BR'],
-    name: 'pt-BR-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pt-PT'],
-    name: 'pt-PT-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pt-PT'],
-    name: 'pt-PT-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pt-PT'],
-    name: 'pt-PT-Wavenet-C',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pt-PT'],
-    name: 'pt-PT-Wavenet-D',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Wavenet-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['sk-SK'],
-    name: 'sk-SK-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['sv-SE'],
-    name: 'sv-SE-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['tr-TR'],
-    name: 'tr-TR-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['tr-TR'],
-    name: 'tr-TR-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['tr-TR'],
-    name: 'tr-TR-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['tr-TR'],
-    name: 'tr-TR-Wavenet-D',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['tr-TR'],
-    name: 'tr-TR-Wavenet-E',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['uk-UA'],
-    name: 'uk-UA-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['es-ES'],
-    name: 'es-ES-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ar-XA'],
-    name: 'ar-XA-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ar-XA'],
-    name: 'ar-XA-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ar-XA'],
-    name: 'ar-XA-Standard-C',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ar-XA'],
-    name: 'ar-XA-Standard-D',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-FR'],
-    name: 'fr-FR-Standard-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['it-IT'],
-    name: 'it-IT-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Standard-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-
-  {
-    languageCodes: ['nl-NL'],
-    name: 'nl-NL-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nl-NL'],
-    name: 'nl-NL-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nl-NL'],
-    name: 'nl-NL-Standard-C',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nl-NL'],
-    name: 'nl-NL-Standard-D',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nl-NL'],
-    name: 'nl-NL-Standard-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['cs-CZ'],
-    name: 'cs-CZ-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['el-GR'],
-    name: 'el-GR-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050,
-  },
-  {
-    languageCodes: ['pt-BR'],
-    name: 'pt-BR-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['hu-HU'],
-    name: 'hu-HU-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050,
-  },
-  {
-    languageCodes: ['pl-PL'],
-    name: 'pl-PL-Standard-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050,
-  },
-  {
-    languageCodes: ['pl-PL'],
-    name: 'pl-PL-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pl-PL'],
-    name: 'pl-PL-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pl-PL'],
-    name: 'pl-PL-Standard-C',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pl-PL'],
-    name: 'pl-PL-Standard-D',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['sk-SK'],
-    name: 'sk-SK-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['tr-TR'],
-    name: 'tr-TR-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050,
-  },
-  {
-    languageCodes: ['tr-TR'],
-    name: 'tr-TR-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['tr-TR'],
-    name: 'tr-TR-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['tr-TR'],
-    name: 'tr-TR-Standard-D',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['tr-TR'],
-    name: 'tr-TR-Standard-E',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['uk-UA'],
-    name: 'uk-UA-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['da-DK'],
-    name: 'da-DK-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fi-FI'],
-    name: 'fi-FI-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pt-PT'],
-    name: 'pt-PT-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pt-PT'],
-    name: 'pt-PT-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pt-PT'],
-    name: 'pt-PT-Standard-C',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['pt-PT'],
-    name: 'pt-PT-Standard-D',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nb-NO'],
-    name: 'nb-no-Standard-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050,
-  },
-  {
-    languageCodes: ['nb-NO'],
-    name: 'nb-NO-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nb-NO'],
-    name: 'nb-NO-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nb-NO'],
-    name: 'nb-NO-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['nb-NO'],
-    name: 'nb-NO-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['sv-SE'],
-    name: 'sv-SE-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 22050,
-  },
-  {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-US'],
-    name: 'en-US-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-US'],
-    name: 'en-US-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-US'],
-    name: 'en-US-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-US'],
-    name: 'en-US-Standard-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['de-DE'],
-    name: 'de-DE-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['de-DE'],
-    name: 'de-DE-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['de-DE'],
-    name: 'de-DE-Standard-E',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-CA'],
-    name: 'fr-CA-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-CA'],
-    name: 'fr-CA-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-CA'],
-    name: 'fr-CA-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-CA'],
-    name: 'fr-CA-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-FR'],
-    name: 'fr-FR-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-FR'],
-    name: 'fr-FR-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-FR'],
-    name: 'fr-FR-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['fr-FR'],
-    name: 'fr-FR-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['it-IT'],
-    name: 'it-IT-Standard-B',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['it-IT'],
-    name: 'it-IT-Standard-C',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-  {
-    languageCodes: ['it-IT'],
-    name: 'it-IT-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
-  },
-];
-
 class FieriFiction {
   constructor({
     tumblrConsumerKey = null,
@@ -1041,6 +174,8 @@ class FieriFiction {
     textGeneratorUrl = null,
     audioGeneratorUrl = null,
     googleCloudCredentials = null,
+    spotifyClientId = null,
+    spotifyClientSecret = null,
     music = '*.mp3',
     textLength = 100,
     topK = 40,
@@ -1067,6 +202,12 @@ class FieriFiction {
     this.temperature = temperature;
     this.googleCloudCredentials = googleCloudCredentials;
     this.loops = glob.sync(`${__dirname}/loops/${this.music}`);
+    if (spotifyClientId && spotifyClientSecret) {
+      this.spotify = new Spotify({
+        id: spotifyClientId,
+        secret: spotifyClientSecret,
+      });
+    }
   }
 
   captionsToString(captions) {
@@ -1112,14 +253,29 @@ class FieriFiction {
     return file.endsWith('.gif');
   }
 
-  addSoundtrack(image, video, loop = null) {
-    const useLoop = loop || this.getRandom(this.loops);
+  getQuery(story, words = 3) {
+    if (!story) {
+      return null;
+    }
+    return story
+      .replace(/[^A-z ]/g, '')
+      .trim()
+      .replace(/[\s]{2,}/g, ' ')
+      .split(' ')
+      .slice(0, words)
+      .join(' ');
+  }
+
+  async addSoundtrack(image, video, story, loop = null) {
+    const useLoop = loop || (await this.getSong(story));
     const trim = this.isGif(image) ? 3 : 1;
     console.log(`\n🎷 Adding music: ${useLoop}`);
     const len = Math.floor(this.getVideoLength(video) - trim);
     const cmd = `ffmpeg -i "${video}" -filter_complex "amovie='${useLoop}':loop=999,loudnorm[s];[0][s]amix=duration=shortest" -t ${len} -y "${video}-temp.mp4" && rm "${video}" && mv "${video}-temp.mp4" "${video}"`;
-
     this.execCmd(cmd);
+    if (useLoop.indexOf('temp-') === 0) {
+      unlinkSync(useLoop);
+    }
   }
 
   createVideo(image, audio, output) {
@@ -1257,13 +413,70 @@ class FieriFiction {
     return this.closeQuotes(this.getFullSentences(req.output));
   }
 
+  async getSong(story) {
+    const random = this.getRandom(this.loops);
+    if (!this.spotify || !story) {
+      console.log(`🎷 Grabbing a random track...`);
+      return random;
+    }
+    const query = this.getQuery(story);
+    try {
+      const filename = `temp-${query.toLowerCase().replace(/ /g, '-')}.mp3`;
+      let items = [];
+      console.log(`🎷 Searching for "${query} instrumental"...`);
+      const instrumental = await this.spotify.search({
+        query: `${query} instrumental`,
+        type: 'track',
+      });
+      items = instrumental.tracks.items;
+      if (items.length === 0) {
+        console.log('🎷 Trying without "instrumental" in the title...');
+        const songs = await this.spotify.search({
+          query,
+          type: 'track',
+        });
+        items = songs.tracks.items;
+      }
+      if (items.length === 0) {
+        console.log(`🎷 Did not find anything, trying just the first word...`);
+        const songs = await this.spotify.search({
+          query: this.getQuery(story, 1),
+          type: 'track',
+        });
+        items = songs.tracks.items;
+      }
+      if (items.length === 0) {
+        console.log(`🎷 Did not find anything, grabbing a random track...`);
+        return random;
+      }
+      const { preview_url: url } = this.getRandom(items);
+
+      try {
+        const response = await request({
+          url,
+          encoding: null,
+        });
+        const buffer = Buffer.from(response, 'utf8');
+        writeFileSync(filename, buffer);
+        return filename;
+      } catch (err) {
+        console.log('error saving');
+      }
+      return preview_url;
+    } catch (error) {
+      console.error(error);
+      console.log(`🎷 Grabbing a random track...`);
+      return random;
+    }
+  }
+
   async generateAndShareVideo(story, image, tags, sourceUrl) {
     const mp3 = `${image}.mp3`;
     const mp4 = `${image}.mp4`;
 
     await this.textToSpeech(story, mp3);
     this.createVideo(image, mp3, mp4);
-    this.addSoundtrack(image, mp4);
+    await this.addSoundtrack(image, mp4, story);
 
     const video = readFileSync(mp4);
     const videoPost = await this.client.createVideoPost(this.blogName, {
