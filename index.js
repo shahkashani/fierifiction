@@ -441,11 +441,12 @@ class FieriFiction {
         });
         items = result.tracks.items;
       }
-      if (items.length === 0) {
+      const relevantItems = items.filter((item) => !!item.preview_url);
+      if (relevantItems.length === 0) {
         console.log(`🎷 Did not find anything, grabbing a random track...`);
         return random;
       }
-      const { preview_url: url } = this.getRandom(items);
+      const { preview_url: url } = this.getRandom(relevantItems);
       try {
         const response = await request({
           url,
@@ -455,7 +456,7 @@ class FieriFiction {
         writeFileSync(filename, buffer);
         return filename;
       } catch (err) {
-        console.log('error saving');
+        console.log('Error saving song', err);
       }
       return preview_url;
     } catch (error) {

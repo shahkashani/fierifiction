@@ -12,7 +12,7 @@ const {
   SPOTIFY_CLIENT_SECRET,
   POST_TEXT_GENERATOR_URL,
 } = process.env;
-const { mp3, gif, loop, text, output, nomusic, story } = argv;
+const { mp3, gif, loop, text, output, nomusic, story, searchSong } = argv;
 
 const ff = new FieriFiction({
   googleCloudCredentials: Buffer.from(
@@ -25,10 +25,12 @@ const ff = new FieriFiction({
 });
 
 (async function () {
+  if (searchSong) {
+    console.log(await ff.getSong(searchSong));
+  }
   if (story) {
     console.log(await ff.generateStory(story));
   }
-
   if (text && mp3) {
     await ff.textToSpeech(text, mp3);
   }
