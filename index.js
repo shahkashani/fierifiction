@@ -475,11 +475,19 @@ class FieriFiction {
     await this.addSoundtrack(image, mp4, story);
 
     const video = readFileSync(mp4);
+    const caption = story.replace(/\n/g, '<br />\n');
+    const tagStr = tags.join(',');
     const videoPost = await this.client.createVideoPost(this.blogName, {
+      caption,
       data64: video.toString('base64'),
-      tags: tags.join(','),
-      caption: story.replace(/\n/g, '<br />\n'),
+      tags: tagStr,
       source_url: sourceUrl,
+    });
+
+    console.log('Posting', {
+      tagStr,
+      sourceUrl,
+      caption,
     });
 
     console.log(
