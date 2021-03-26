@@ -466,7 +466,7 @@ class FieriFiction {
     }
   }
 
-  async generateAndShareVideo(story, image, tags, sourceUrl) {
+  async generateAndShareVideo(story, image, tags, sourceUrl, publishState) {
     const mp3 = `${image}.mp3`;
     const mp4 = `${image}.mp4`;
 
@@ -482,6 +482,7 @@ class FieriFiction {
       data64: video.toString('base64'),
       tags: tagStr,
       source_url: sourceUrl,
+      state: publishState,
     });
 
     console.log('Posting', {
@@ -503,9 +504,13 @@ class FieriFiction {
     captions,
     tags = [],
     sourceUrl = null,
+    publishState = undefined,
     reblogInfo = null,
     useStory = false
   ) {
+    if (publishState) {
+      console.log(`👀 Will be making a ${publishState}`);
+    }
     const image = this.getImage(images);
     let story = useStory ? captions.join(' ') : null;
     try {
@@ -516,7 +521,13 @@ class FieriFiction {
           process.exit(0);
         }
       }
-      await this.generateAndShareVideo(story, image, tags, sourceUrl);
+      await this.generateAndShareVideo(
+        story,
+        image,
+        tags,
+        sourceUrl,
+        publishState
+      );
     } catch (err) {
       console.error(`💥 Something borked: ${err}`);
       if (reblogInfo && story) {
