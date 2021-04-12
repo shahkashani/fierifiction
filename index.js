@@ -216,6 +216,10 @@ class FieriFiction {
     }
   }
 
+  replacements(captions) {
+    return captions.replace(/♪/g, 'Mmmm');
+  }
+
   captionsToString(captions) {
     if (typeof captions === 'string') {
       return captions;
@@ -360,9 +364,11 @@ class FieriFiction {
       languageCode: languageCodes[0],
     };
 
+    const input = this.replacements(text);
+
     const dataString = JSON.stringify({
       input: {
-        text,
+        text: input,
       },
       voice: paramVoice,
       audioConfig: {
