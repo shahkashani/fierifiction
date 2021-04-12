@@ -217,7 +217,7 @@ class FieriFiction {
   }
 
   replacements(captions) {
-    return captions.replace(/♪/g, 'Mmmm');
+    return captions.replace(/♪/g, 'La la la');
   }
 
   captionsToString(captions) {
