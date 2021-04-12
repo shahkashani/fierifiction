@@ -1,9 +1,15 @@
 const tumblr = require('tumblr.js');
 const request = require('request-promise');
 const Spotify = require('node-spotify-api');
-const { writeFileSync, readFileSync, unlinkSync } = require('fs');
+const {
+  writeFileSync,
+  readFileSync,
+  unlinkSync,
+  createReadStream,
+} = require('fs');
 const { exec } = require('shelljs');
 const { glob } = require('glob');
+const { sample } = require('lodash');
 
 const EN_VOICES = [
   {
@@ -234,10 +240,6 @@ class FieriFiction {
     return result;
   }
 
-  getRandom(array) {
-    return array[Math.floor(Math.random() * array.length)];
-  }
-
   getVideoLength(file) {
     const output = this.execCmd(
       `ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${file}"`
@@ -350,7 +352,7 @@ class FieriFiction {
       'Content-Type': 'application/json; charset=utf-8',
     };
 
-    const { languageCodes, ssmlGender, name } = this.getRandom(EN_VOICES);
+    const { languageCodes, ssmlGender, name } = sample(EN_VOICES);
 
     const paramVoice = {
       ssmlGender,
@@ -410,7 +412,7 @@ class FieriFiction {
   }
 
   async getSong(story) {
-    const random = this.getRandom(this.loops);
+    const random = sample(this.loops);
     if (!this.spotify || !story) {
       console.log(`🎷 Grabbing a random track...`);
       return random;
@@ -446,7 +448,7 @@ class FieriFiction {
         console.log(`🎷 Did not find anything, grabbing a random track...`);
         return random;
       }
-      const { preview_url: url } = this.getRandom(relevantItems);
+      const { preview_url: url } = sample(relevantItems);
       try {
         const response = await request({
           url,
@@ -474,21 +476,37 @@ class FieriFiction {
     this.createVideo(image, mp3, mp4);
     await this.addSoundtrack(image, mp4, story);
 
+    /*
+    const response = await this.createVideoPostNpf(
+      [mp4],
+      tags,
+      story,
+      sourceUrl,
+      publishState
+    );
+    console.log(response);
+    
+    const url = `https://${this.blogName}.tumblr.com/post/${response.id}`;
+    console.log(url);
+    */
+
     const video = readFileSync(mp4);
     const caption = story.replace(/\n/g, '<br />\n');
     const tagStr = tags.join(',');
-    const videoPost = await this.client.createVideoPost(this.blogName, {
-      caption,
-      data64: video.toString('base64'),
-      tags: tagStr,
-      source_url: sourceUrl,
-      state: publishState,
-    });
 
     console.log('Posting', {
       tagStr,
       sourceUrl,
       caption,
+      publishState,
+    });
+
+    const videoPost = await this.client.createVideoPost(this.blogName, {
+      caption,
+      data64: video.toString('base64'),
+      tags: tagStr,
+      source_url: sourceUrl,
+      state: publishState || 'published',
     });
 
     console.log(
@@ -497,6 +515,78 @@ class FieriFiction {
     console.log('👋 Wrapping up!');
     unlinkSync(mp3);
     unlinkSync(mp4);
+  }
+
+  getBaseParams(apiPath) {
+    return {
+      ...this.client.requestOptions,
+      url: this.client.baseUrl + apiPath,
+      oauth: this.client.credentials,
+    };
+  }
+
+  async makeNpfRequestForm(apiPath, formData, body) {
+    return new Promise((resolve, reject) => {
+      this.client.request.post(
+        {
+          ...this.getBaseParams(apiPath),
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          formData: {
+            json: JSON.stringify(body),
+            ...formData,
+          },
+        },
+        (err, _response, body) => {
+          if (err) {
+            return reject(err);
+          }
+          try {
+            body = JSON.parse(body);
+          } catch (e) {
+            return reject(`Malformed Response: ${body}`);
+          }
+          resolve(body);
+        }
+      );
+    });
+  }
+
+  async createVideoPostNpf(videos, tags, text, sourceUrl, publishState) {
+    const formData = videos.reduce((memo, video, index) => {
+      memo[`video${index}`] = createReadStream(video);
+      return memo;
+    }, {});
+
+    const videoContent = videos.map((_video, index) => {
+      return {
+        type: 'video',
+        media: [
+          {
+            type: 'video/mp4',
+            identifier: `video${index}`,
+          },
+        ],
+      };
+    });
+
+    const textBlocks = (text || '')
+      .split(/\n/)
+      .map((text) => ({ type: 'text', text }));
+
+    const result = await this.makeNpfRequestForm(
+      `/v2/blog/${this.blogName}/posts`,
+      formData,
+      {
+        tags: tags.join(','),
+        state: publishState || 'published',
+        source_url: sourceUrl,
+        content: [...videoContent, ...textBlocks],
+      }
+    );
+    console.log(result);
+    return result.response;
   }
 
   async postVideo(
@@ -529,7 +619,7 @@ class FieriFiction {
         publishState
       );
     } catch (err) {
-      console.error(`💥 Something borked: ${err}`);
+      console.error(err);
       if (reblogInfo && story) {
         console.warn(`💥 Trying to reblog instead as a last-ditch effort`);
         await this.reblogPost(
@@ -549,7 +639,7 @@ class FieriFiction {
         : await this.generateStory(captions);
       await this.reblogPost(story, postId, blogName, tags);
     } catch (err) {
-      console.error(`💥 Something borked: ${err}`);
+      console.error(err);
     }
   }
 }

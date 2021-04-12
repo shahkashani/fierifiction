@@ -16,11 +16,12 @@
   "dependencies": {
     "dotenv": "^8.0.0",
     "glob": "^7.1.4",
+    "lodash": "^4.17.21",
     "node-spotify-api": "^1.1.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "shelljs": "^0.8.3",
-    "tumblr.js": "^2.0.2",
+    "tumblr.js": "^3.0.0",
     "yargs": "^13.2.4"
   }
 }
