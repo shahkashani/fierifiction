@@ -11,6 +11,7 @@ const {
   SPOTIFY_CLIENT_ID,
   SPOTIFY_CLIENT_SECRET,
   POST_TEXT_GENERATOR_URL,
+  POST_TEXT_GENERATOR_API_KEY
 } = process.env;
 const { mp3, gif, loop, text, output, nomusic, story, searchSong } = argv;
 
@@ -22,6 +23,7 @@ const ff = new FieriFiction({
   spotifyClientId: SPOTIFY_CLIENT_ID,
   spotifyClientSecret: SPOTIFY_CLIENT_SECRET,
   textGeneratorUrl: POST_TEXT_GENERATOR_URL,
+  textGeneratorApiKey: POST_TEXT_GENERATOR_API_KEY
 });
 
 (async function () {

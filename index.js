@@ -9,7 +9,8 @@ const {
 } = require('fs');
 const { exec } = require('shelljs');
 const { glob } = require('glob');
-const { sample } = require('lodash');
+const { sample, truncate } = require('lodash');
+const deepai = require('deepai');
 
 const EN_VOICES = [
   {
@@ -184,10 +185,9 @@ class FieriFiction {
     spotifyClientSecret = null,
     music = '*.mp3',
     textLength = 100,
-    topK = 40,
-    temperature = 1,
     speakingRate = 1,
     pitch = 0,
+    textGeneratorApiKey,
   } = {}) {
     this.client = tumblr.createClient({
       token: tumblrTokenKey,
@@ -199,13 +199,12 @@ class FieriFiction {
 
     this.blogName = tumblrBlogName;
     this.textGeneratorUrl = textGeneratorUrl;
+    this.textGeneratorApiKey = textGeneratorApiKey;
     this.audioGeneratorUrl = audioGeneratorUrl;
     this.textLength = textLength;
     this.speakingRate = speakingRate;
     this.pitch = pitch;
     this.music = music;
-    this.topK = topK;
-    this.temperature = temperature;
     this.googleCloudCredentials = googleCloudCredentials;
     this.loops = glob.sync(`${__dirname}/loops/${this.music}`);
     if (spotifyClientId && spotifyClientSecret) {
@@ -213,6 +212,9 @@ class FieriFiction {
         id: spotifyClientId,
         secret: spotifyClientSecret,
       });
+    }
+    if (this.textGeneratorApiKey) {
+      deepai.setApiKey(this.textGeneratorApiKey);
     }
   }
 
@@ -396,25 +398,21 @@ class FieriFiction {
   }
 
   async generateStory(captions) {
-    const params = {
-      length: this.textLength,
-      top_k: this.topK,
-      temperature: this.temperature,
-    };
-    console.log(`\n💭 Talking to Dreamscape (${JSON.stringify(params)})`);
-    const input = this.captionsToString(captions);
-    const req = await request({
-      uri: this.textGeneratorUrl,
-      qs: {
-        q: input,
-        ...params,
-      },
-      json: true,
+    // @todo Use this.textLength
+    console.log(`\n💭 Talking to AI`);
+    const text = this.captionsToString(captions);
+    const req = await deepai.callStandardApi('text-generator', {
+      text,
     });
     if (!req || !req.output) {
       return null;
     }
-    return this.getFullSentences(req.output).replace(/["“”]/g, '');
+    const result = truncate(req.output, {
+      length: this.textLength,
+      separator: /,?\.* +/,
+      omission: '',
+    });
+    return this.getFullSentences(result).replace(/["“”]/g, '');
   }
 
   async getSong(story) {
