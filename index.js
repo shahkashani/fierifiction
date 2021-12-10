@@ -6,6 +6,7 @@ const {
   readFileSync,
   unlinkSync,
   createReadStream,
+  createWriteStream,
 } = require('fs');
 const { exec } = require('shelljs');
 const { glob } = require('glob');
@@ -395,25 +396,25 @@ class FieriFiction {
   async textToSpeech(text, output) {
     console.log('\n🕋 Synthesizing');
     const input = this.replacements(text);
-    const audioConfig = speachSdk.AudioConfig.fromAudioFileOutput(output);
 
     const { name, code, region } = sample(VOICES);
     this.speechConfig.speechSynthesisLanguage = code;
     this.speechConfig.speechSynthesisVoiceName = name;
     console.log(`\n🕋 Voice: ${name} / ${code} / ${region}`);
 
-    const synthesizer = new speachSdk.SpeechSynthesizer(
-      this.speechConfig,
-      audioConfig
-    );
-    return new Promise((resolve, reject) => {
+    const synthesizer = new speachSdk.SpeechSynthesizer(this.speechConfig);
+    await new Promise((resolve, reject) => {
       synthesizer.speakTextAsync(
         input,
         (result) => {
           synthesizer.close();
-          if (result) {
+          writeFileSync(output, result.audioData);
+          const writeStream = createWriteStream(output);
+          writeStream.write(Buffer.from(result.audioData), 'binary');
+          writeStream.on('finish', () => {
             resolve(output);
-          }
+          });
+          writeStream.end();
         },
         (error) => {
           synthesizer.close();
@@ -421,6 +422,7 @@ class FieriFiction {
         }
       );
     });
+    return output;
   }
 
   async generateStory(captions) {
@@ -528,7 +530,7 @@ class FieriFiction {
       `👀 Go check it out at https://${this.blogName}.tumblr.com/post/${videoPost.id}`
     );
     console.log('👋 Wrapping up!');
-    unlinkSync(mp3);
+    unlinkSync(wav);
     unlinkSync(mp4);
   }
 
