@@ -434,8 +434,10 @@ class FieriFiction {
     if (!req || !req.output) {
       return null;
     }
+    console.log('\n== Raw output ==\n\n', req.output);
+    console.log('\n== Raw output ==\n\n');
     const result = truncate(req.output, {
-      length: this.textLength,
+      length: this.textLength + text.length,
       separator: /,?\.* +/,
       omission: '',
     });
