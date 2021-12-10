@@ -11,163 +11,218 @@ const { exec } = require('shelljs');
 const { glob } = require('glob');
 const { sample, truncate } = require('lodash');
 const deepai = require('deepai');
+const speachSdk = require('microsoft-cognitiveservices-speech-sdk');
 
-const EN_VOICES = [
+const VOICES = [
   {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-US-AmberNeural',
+    region: 'United States',
+    code: 'en-US',
   },
   {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-US-BrandonNeural',
+    region: 'United States',
+    code: 'en-US',
   },
   {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-GB-LibbyNeural',
+    region: 'United Kingdom',
+    code: 'en-GB',
   },
   {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-GB-RyanNeural',
+    region: 'United Kingdom',
+    code: 'en-GB',
   },
   {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Wavenet-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-AU-NatashaNeural',
+    region: 'Australia',
+    code: 'en-AU',
   },
   {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-AU-WilliamNeural',
+    region: 'Australia',
+    code: 'en-AU',
   },
   {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-CA-ClaraNeural',
+    region: 'Canada',
+    code: 'en-CA',
   },
   {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-CA-LiamNeural',
+    region: 'Canada',
+    code: 'en-CA',
   },
   {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-A',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-HK-YanNeural',
+    region: 'Hongkong',
+    code: 'en-HK',
   },
   {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-HK-SamNeural',
+    region: 'Hongkong',
+    code: 'en-HK',
   },
   {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-IN-NeerjaNeural',
+    region: 'India',
+    code: 'en-IN',
   },
   {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-IN-PrabhatNeural',
+    region: 'India',
+    code: 'en-IN',
   },
   {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-IE-EmilyNeural',
+    region: 'Ireland',
+    code: 'en-IE',
   },
   {
-    languageCodes: ['en-US'],
-    name: 'en-US-Wavenet-F',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-IE-ConnorNeural',
+    region: 'Ireland',
+    code: 'en-IE',
   },
   {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-KE-AsiliaNeural',
+    region: 'Kenya',
+    code: 'en-KE',
   },
   {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-KE-ChilembaNeural',
+    region: 'Kenya',
+    code: 'en-KE',
   },
   {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-NZ-MollyNeural',
+    region: 'New Zealand',
+    code: 'en-NZ',
   },
   {
-    languageCodes: ['en-GB'],
-    name: 'en-GB-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-NZ-MitchellNeural',
+    region: 'New Zealand',
+    code: 'en-NZ',
   },
   {
-    languageCodes: ['en-US'],
-    name: 'en-US-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-NG-EzinneNeural',
+    region: 'Nigeria',
+    code: 'en-NG',
   },
   {
-    languageCodes: ['en-US'],
-    name: 'en-US-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-NG-AbeoNeural',
+    region: 'Nigeria',
+    code: 'en-NG',
   },
   {
-    languageCodes: ['en-US'],
-    name: 'en-US-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-PH-RosaNeural',
+    region: 'Philippines',
+    code: 'en-PH',
   },
   {
-    languageCodes: ['en-US'],
-    name: 'en-US-Standard-E',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-PH-JamesNeural',
+    region: 'Philippines',
+    code: 'en-PH',
   },
   {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Standard-A',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-SG-LunaNeural',
+    region: 'Singapore',
+    code: 'en-SG',
   },
   {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Standard-B',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-SG-WayneNeural',
+    region: 'Singapore',
+    code: 'en-SG',
   },
   {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Standard-C',
-    ssmlGender: 'FEMALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-ZA-LeahNeural',
+    region: 'South Africa',
+    code: 'en-ZA',
   },
   {
-    languageCodes: ['en-AU'],
-    name: 'en-AU-Standard-D',
-    ssmlGender: 'MALE',
-    naturalSampleRateHertz: 24000,
+    name: 'en-ZA-LukeNeural',
+    region: 'South Africa',
+    code: 'en-ZA',
+  },
+  {
+    name: 'en-TZ-ImaniNeural',
+    region: 'Tanzania',
+    code: 'en-TZ',
+  },
+  {
+    name: 'en-TZ-ElimuNeural',
+    region: 'Tanzania',
+    code: 'en-TZ',
+  },
+  {
+    name: 'en-GB-SoniaNeural',
+    region: 'United Kingdom',
+    code: 'en-GB',
+  },
+  {
+    name: 'en-US-AriaNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-AshleyNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-CoraNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-ElizabethNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-JennyNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-MichelleNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-MonicaNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-SaraNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-AnaNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-ChristopherNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-EricNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-GuyNeural',
+    region: 'United States',
+    code: 'en-US',
+  },
+  {
+    name: 'en-US-JacobNeural',
+    region: 'United States',
+    code: 'en-US',
   },
 ];
 
@@ -180,7 +235,6 @@ class FieriFiction {
     tumblrBlogName = null,
     textGeneratorUrl = null,
     audioGeneratorUrl = null,
-    googleCloudCredentials = null,
     spotifyClientId = null,
     spotifyClientSecret = null,
     music = '*.mp3',
@@ -188,6 +242,8 @@ class FieriFiction {
     speakingRate = 1,
     pitch = 0,
     textGeneratorApiKey,
+    microsoftAzureSpeechToken,
+    microsoftAzureSpeechRegion,
   } = {}) {
     this.client = tumblr.createClient({
       token: tumblrTokenKey,
@@ -196,7 +252,6 @@ class FieriFiction {
       consumer_secret: tumblrConsumerSecret,
       returnPromises: true,
     });
-
     this.blogName = tumblrBlogName;
     this.textGeneratorUrl = textGeneratorUrl;
     this.textGeneratorApiKey = textGeneratorApiKey;
@@ -205,7 +260,6 @@ class FieriFiction {
     this.speakingRate = speakingRate;
     this.pitch = pitch;
     this.music = music;
-    this.googleCloudCredentials = googleCloudCredentials;
     this.loops = glob.sync(`${__dirname}/loops/${this.music}`);
     if (spotifyClientId && spotifyClientSecret) {
       this.spotify = new Spotify({
@@ -216,6 +270,10 @@ class FieriFiction {
     if (this.textGeneratorApiKey) {
       deepai.setApiKey(this.textGeneratorApiKey);
     }
+    this.speechConfig = speachSdk.SpeechConfig.fromSubscription(
+      microsoftAzureSpeechToken,
+      microsoftAzureSpeechRegion
+    );
   }
 
   replacements(captions) {
@@ -334,74 +392,38 @@ class FieriFiction {
     );
     return response;
   }
-
-  // I truly hate Google Cloud's dependency on authentication files
-  execAuthGcloudCmd(cmd) {
-    if (!this.googleCloudCredentials) {
-      return this.execCmd(cmd).trim();
-    }
-    const tmpFile = '.creds.json';
-    writeFileSync(tmpFile, this.googleCloudCredentials);
-    const result = this.execCmd(
-      `GOOGLE_APPLICATION_CREDENTIALS=${tmpFile} ${cmd}`
-    ).trim();
-    unlinkSync(tmpFile);
-    return result;
-  }
-
   async textToSpeech(text, output) {
     console.log('\n🕋 Synthesizing');
-
-    const token = this.execAuthGcloudCmd(
-      'gcloud auth application-default print-access-token'
-    );
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json; charset=utf-8',
-    };
-
-    const { languageCodes, ssmlGender, name } = sample(EN_VOICES);
-
-    const paramVoice = {
-      ssmlGender,
-      name,
-      languageCode: languageCodes[0],
-    };
-
     const input = this.replacements(text);
+    const audioConfig = speachSdk.AudioConfig.fromAudioFileOutput(output);
 
-    const dataString = JSON.stringify({
-      input: {
-        text: input,
-      },
-      voice: paramVoice,
-      audioConfig: {
-        audioEncoding: 'MP3',
-        speakingRate: this.speakingRate,
-        pitch: this.pitch,
-      },
+    const { name, code, region } = sample(VOICES);
+    this.speechConfig.speechSynthesisLanguage = code;
+    this.speechConfig.speechSynthesisVoiceName = name;
+    console.log(`\n🕋 Voice: ${name} / ${code} / ${region}`);
+
+    const synthesizer = new speachSdk.SpeechSynthesizer(
+      this.speechConfig,
+      audioConfig
+    );
+    return new Promise((resolve, reject) => {
+      synthesizer.speakTextAsync(
+        input,
+        (result) => {
+          synthesizer.close();
+          if (result) {
+            resolve(output);
+          }
+        },
+        (error) => {
+          synthesizer.close();
+          reject(error);
+        }
+      );
     });
-
-    const options = {
-      url: 'https://texttospeech.googleapis.com/v1/text:synthesize',
-      method: 'POST',
-      headers: headers,
-      body: dataString,
-    };
-
-    try {
-      const response = await request(options);
-      const audioContent = JSON.parse(response).audioContent;
-      const buffer = Buffer.from(audioContent, 'base64');
-      writeFileSync(output, buffer);
-    } catch (err) {
-      console.error(`💥 Could not save mp3 (with token: ${token}):`, err);
-    }
   }
 
   async generateStory(captions) {
-    // @todo Use this.textLength
     console.log(`\n💭 Talking to AI`);
     const text = this.captionsToString(captions);
     const req = await deepai.callStandardApi('text-generator', {
@@ -476,26 +498,12 @@ class FieriFiction {
   }
 
   async generateAndShareVideo(story, image, tags, sourceUrl, publishState) {
-    const mp3 = `${image}.mp3`;
+    const wav = `${image}.wav`;
     const mp4 = `${image}.mp4`;
 
-    await this.textToSpeech(story, mp3);
-    this.createVideo(image, mp3, mp4);
+    await this.textToSpeech(story, wav);
+    this.createVideo(image, wav, mp4);
     await this.addSoundtrack(image, mp4, story);
-
-    /*
-    const response = await this.createVideoPostNpf(
-      [mp4],
-      tags,
-      story,
-      sourceUrl,
-      publishState
-    );
-    console.log(response);
-    
-    const url = `https://${this.blogName}.tumblr.com/post/${response.id}`;
-    console.log(url);
-    */
 
     const video = readFileSync(mp4);
     const caption = story.replace(/\n/g, '<br />\n');

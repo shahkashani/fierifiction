@@ -7,23 +7,22 @@ const argv = require('yargs')
   .usage('Usage: $0 <command> [options]').argv;
 
 const {
-  GOOGLE_CLOUD_CREDENTIALS_BASE64,
   SPOTIFY_CLIENT_ID,
   SPOTIFY_CLIENT_SECRET,
   POST_TEXT_GENERATOR_URL,
-  POST_TEXT_GENERATOR_API_KEY
+  POST_TEXT_GENERATOR_API_KEY,
+  MICROSOFT_AZURE_SPEECH_TOKEN,
+  MICROSOFT_AZURE_SPEECH_REGION,
 } = process.env;
 const { mp3, gif, loop, text, output, nomusic, story, searchSong } = argv;
 
 const ff = new FieriFiction({
-  googleCloudCredentials: Buffer.from(
-    GOOGLE_CLOUD_CREDENTIALS_BASE64,
-    'base64'
-  ).toString(),
   spotifyClientId: SPOTIFY_CLIENT_ID,
   spotifyClientSecret: SPOTIFY_CLIENT_SECRET,
   textGeneratorUrl: POST_TEXT_GENERATOR_URL,
-  textGeneratorApiKey: POST_TEXT_GENERATOR_API_KEY
+  textGeneratorApiKey: POST_TEXT_GENERATOR_API_KEY,
+  microsoftAzureSpeechToken: MICROSOFT_AZURE_SPEECH_TOKEN,
+  microsoftAzureSpeechRegion: MICROSOFT_AZURE_SPEECH_REGION,
 });
 
 (async function () {
