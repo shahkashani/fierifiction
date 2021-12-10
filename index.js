@@ -234,6 +234,9 @@ class FieriFiction {
 
   getFullSentences(string) {
     const match = string.match(/[.!?]/gi);
+    if (!match || match.length === 0) {
+      return string;
+    }
     const lastIndex = string.lastIndexOf(match[match.length - 1]);
     return string.slice(0, lastIndex + 1);
   }
