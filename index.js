@@ -239,7 +239,7 @@ class FieriFiction {
     spotifyClientId = null,
     spotifyClientSecret = null,
     music = '*.mp3',
-    textLength = 100,
+    textLength = 250,
     speakingRate = 1,
     pitch = 0,
     textGeneratorApiKey,
@@ -434,14 +434,17 @@ class FieriFiction {
     if (!req || !req.output) {
       return null;
     }
-    console.log('\n== Raw output ==\n\n', req.output);
+    console.log('\n== Raw output ==\n');
+    console.log(req.output);
     console.log('\n== Raw output ==\n\n');
     const result = truncate(req.output, {
       length: this.textLength + text.length,
       separator: /,?\.* +/,
       omission: '',
     });
-    return this.getFullSentences(result).replace(/["“”]/g, '');
+    return this.getFullSentences(result)
+      .replace(/["“”]/g, '')
+      .replace(/[\n\r]{2,}/g, '\n\n');
   }
 
   async getSong(story) {
