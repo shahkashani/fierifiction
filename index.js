@@ -295,13 +295,14 @@ class FieriFiction {
       .replace(/\s{2,}/, ' ');
   }
 
-  getFullSentences(string) {
-    const match = string.match(/[.!?]/gi);
+  getFullSentences(string, text) {
+    const remaining = string.slice(text.length);
+    const match = remaining.match(/[.!?]/gi);
     if (!match || match.length === 0) {
       return string;
     }
-    const lastIndex = string.lastIndexOf(match[match.length - 1]);
-    return string.slice(0, lastIndex + 1);
+    const lastIndex = remaining.lastIndexOf(match[match.length - 1]);
+    return `${text}${remaining.slice(0, lastIndex + 1)}`;
   }
 
   execCmd(cmd) {
@@ -446,7 +447,7 @@ class FieriFiction {
       separator: /,?\.* +/,
       omission: '',
     });
-    return this.getFullSentences(result)
+    return this.getFullSentences(result, text)
       .replace(/["“”]/g, '')
       .replace(/[\n\r]{2,}/g, '\n\n');
   }
