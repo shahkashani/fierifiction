@@ -244,7 +244,8 @@ class FieriFiction {
     music = '*.mp3',
     textLength = 250,
     speakingRate = 1,
-    songPrefix = 'instrumental',
+    songPrefix = '',
+    songPostfix = 'instrumental',
     pitch = 0,
     textGeneratorApiKey,
     microsoftAzureSpeechToken,
@@ -258,6 +259,7 @@ class FieriFiction {
       returnPromises: true,
     });
     this.songPrefix = songPrefix;
+    this.songPostfix = songPostfix;
     this.moderation = moderation;
     this.blogName = tumblrBlogName;
     this.textGeneratorUrl = textGeneratorUrl;
@@ -485,7 +487,11 @@ class FieriFiction {
     let attempts = [];
 
     for (let i = 4; i > 0; i -= 1) {
-      attempts.push(`${this.getQuery(story, i)} ${this.songPrefix}`);
+      attempts.push(
+        `${this.songPrefix} ${this.getQuery(story, i)} ${
+          this.songPostfix
+        }`.trim()
+      );
     }
 
     for (let j = 4; j > 0; j -= 1) {
@@ -498,7 +504,7 @@ class FieriFiction {
         let query = attempts.shift();
         console.log(`🎷 Searching for "${query}"...`);
         const result = await this.spotify.search({
-          query: `${query} ${this.songPrefix}`,
+          query: `${this.songPrefix} ${query} ${this.songPostfix}`.trim(),
           type: 'track',
         });
         items = result.tracks.items;
