@@ -1,10 +1,28 @@
 require('dotenv').config();
 
 const FieriFiction = require('./');
+const BadWords = require('bad-words');
 
 const argv = require('yargs')
   .boolean('nomusic')
   .usage('Usage: $0 <command> [options]').argv;
+
+class ModerationWords {
+  constructor(
+    bannedWords = [],
+    cleanWords = ['God', 'fuck', 'fucking', 'damn', 'hell']
+  ) {
+    this.badWords = new BadWords();
+    this.badWords.addWords(...bannedWords);
+    this.badWords.removeWords(...cleanWords);
+  }
+
+  async validate(text) {
+    return !this.badWords.isProfane(text);
+  }
+}
+
+module.exports = ModerationWords;
 
 const {
   SPOTIFY_CLIENT_ID,
@@ -23,6 +41,7 @@ const ff = new FieriFiction({
   textGeneratorApiKey: POST_TEXT_GENERATOR_API_KEY,
   microsoftAzureSpeechToken: MICROSOFT_AZURE_SPEECH_TOKEN,
   microsoftAzureSpeechRegion: MICROSOFT_AZURE_SPEECH_REGION,
+  moderation: new ModerationWords(),
 });
 
 (async function () {

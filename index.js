@@ -14,6 +14,8 @@ const { sample, truncate } = require('lodash');
 const deepai = require('deepai');
 const speachSdk = require('microsoft-cognitiveservices-speech-sdk');
 
+const ATTEMPS = 3;
+
 const VOICES = [
   {
     name: 'en-US-AmberNeural',
@@ -238,6 +240,7 @@ class FieriFiction {
     audioGeneratorUrl = null,
     spotifyClientId = null,
     spotifyClientSecret = null,
+    moderation = null,
     music = '*.mp3',
     textLength = 250,
     speakingRate = 1,
@@ -253,6 +256,7 @@ class FieriFiction {
       consumer_secret: tumblrConsumerSecret,
       returnPromises: true,
     });
+    this.moderation = moderation;
     this.blogName = tumblrBlogName;
     this.textGeneratorUrl = textGeneratorUrl;
     this.textGeneratorApiKey = textGeneratorApiKey;
@@ -425,7 +429,7 @@ class FieriFiction {
     return output;
   }
 
-  async generateStory(captions) {
+  async generateStoryRaw(captions) {
     console.log(`\n💭 Talking to AI`);
     const text = this.captionsToString(captions);
     const req = await deepai.callStandardApi('text-generator', {
@@ -445,6 +449,23 @@ class FieriFiction {
     return this.getFullSentences(result)
       .replace(/["“”]/g, '')
       .replace(/[\n\r]{2,}/g, '\n\n');
+  }
+
+  async generateStory(captions) {
+    const text = this.captionsToString(captions);
+    if (!this.moderation) {
+      return await this.generateStoryRaw(captions);
+    }
+    for (let i = 0; i < ATTEMPS; i += 1) {
+      const story = await this.generateStoryRaw(captions);
+      const addedStory = story.slice(text.length);
+      if (await this.moderation.validate(addedStory)) {
+        return story;
+      } else {
+        console.error('Does not pass validation: ', story);
+      }
+    }
+    return `${text}...wow.`;
   }
 
   async getSong(story) {
