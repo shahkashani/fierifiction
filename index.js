@@ -378,7 +378,7 @@ class FieriFiction {
           query: `${this.songPrefix} ${query} ${this.songPostfix}`.trim(),
           type: 'track',
         });
-        console.log({ reuslts });
+        console.log({ result });
         items = result.tracks.items;
       }
       const relevantItems = items.filter((item) => !!item.preview_url);
