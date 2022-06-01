@@ -16,219 +16,6 @@ const speachSdk = require('microsoft-cognitiveservices-speech-sdk');
 
 const ATTEMPS = 3;
 
-const VOICES = [
-  {
-    name: 'en-US-AmberNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-BrandonNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-GB-LibbyNeural',
-    region: 'United Kingdom',
-    code: 'en-GB',
-  },
-  {
-    name: 'en-GB-RyanNeural',
-    region: 'United Kingdom',
-    code: 'en-GB',
-  },
-  {
-    name: 'en-AU-NatashaNeural',
-    region: 'Australia',
-    code: 'en-AU',
-  },
-  {
-    name: 'en-AU-WilliamNeural',
-    region: 'Australia',
-    code: 'en-AU',
-  },
-  {
-    name: 'en-CA-ClaraNeural',
-    region: 'Canada',
-    code: 'en-CA',
-  },
-  {
-    name: 'en-CA-LiamNeural',
-    region: 'Canada',
-    code: 'en-CA',
-  },
-  {
-    name: 'en-HK-YanNeural',
-    region: 'Hongkong',
-    code: 'en-HK',
-  },
-  {
-    name: 'en-HK-SamNeural',
-    region: 'Hongkong',
-    code: 'en-HK',
-  },
-  {
-    name: 'en-IN-NeerjaNeural',
-    region: 'India',
-    code: 'en-IN',
-  },
-  {
-    name: 'en-IN-PrabhatNeural',
-    region: 'India',
-    code: 'en-IN',
-  },
-  {
-    name: 'en-IE-EmilyNeural',
-    region: 'Ireland',
-    code: 'en-IE',
-  },
-  {
-    name: 'en-IE-ConnorNeural',
-    region: 'Ireland',
-    code: 'en-IE',
-  },
-  {
-    name: 'en-KE-AsiliaNeural',
-    region: 'Kenya',
-    code: 'en-KE',
-  },
-  {
-    name: 'en-KE-ChilembaNeural',
-    region: 'Kenya',
-    code: 'en-KE',
-  },
-  {
-    name: 'en-NZ-MollyNeural',
-    region: 'New Zealand',
-    code: 'en-NZ',
-  },
-  {
-    name: 'en-NZ-MitchellNeural',
-    region: 'New Zealand',
-    code: 'en-NZ',
-  },
-  {
-    name: 'en-NG-EzinneNeural',
-    region: 'Nigeria',
-    code: 'en-NG',
-  },
-  {
-    name: 'en-NG-AbeoNeural',
-    region: 'Nigeria',
-    code: 'en-NG',
-  },
-  {
-    name: 'en-PH-RosaNeural',
-    region: 'Philippines',
-    code: 'en-PH',
-  },
-  {
-    name: 'en-PH-JamesNeural',
-    region: 'Philippines',
-    code: 'en-PH',
-  },
-  {
-    name: 'en-SG-LunaNeural',
-    region: 'Singapore',
-    code: 'en-SG',
-  },
-  {
-    name: 'en-SG-WayneNeural',
-    region: 'Singapore',
-    code: 'en-SG',
-  },
-  {
-    name: 'en-ZA-LeahNeural',
-    region: 'South Africa',
-    code: 'en-ZA',
-  },
-  {
-    name: 'en-ZA-LukeNeural',
-    region: 'South Africa',
-    code: 'en-ZA',
-  },
-  {
-    name: 'en-TZ-ImaniNeural',
-    region: 'Tanzania',
-    code: 'en-TZ',
-  },
-  {
-    name: 'en-TZ-ElimuNeural',
-    region: 'Tanzania',
-    code: 'en-TZ',
-  },
-  {
-    name: 'en-GB-SoniaNeural',
-    region: 'United Kingdom',
-    code: 'en-GB',
-  },
-  {
-    name: 'en-US-AriaNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-AshleyNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-CoraNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-ElizabethNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-JennyNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-MichelleNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-MonicaNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-SaraNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-AnaNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-ChristopherNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-EricNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-GuyNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-  {
-    name: 'en-US-JacobNeural',
-    region: 'United States',
-    code: 'en-US',
-  },
-];
-
 class FieriFiction {
   constructor({
     tumblrConsumerKey = null,
@@ -243,13 +30,17 @@ class FieriFiction {
     moderation = null,
     music = '*.mp3',
     textLength = 250,
-    speakingRate = 1,
     songPrefix = '',
     songPostfix = 'instrumental',
-    pitch = 0,
     textGeneratorApiKey,
     microsoftAzureSpeechToken,
     microsoftAzureSpeechRegion,
+    voiceName,
+    voiceStyle,
+    voiceGender,
+    voiceContour,
+    voicePitch,
+    voiceRate,
   } = {}) {
     this.client = tumblr.createClient({
       token: tumblrTokenKey,
@@ -266,9 +57,14 @@ class FieriFiction {
     this.textGeneratorApiKey = textGeneratorApiKey;
     this.audioGeneratorUrl = audioGeneratorUrl;
     this.textLength = textLength;
-    this.speakingRate = speakingRate;
-    this.pitch = pitch;
     this.music = music;
+    this.voiceName = voiceName;
+    this.voiceStyle = voiceStyle;
+    this.voiceGender = voiceGender;
+    this.voiceRate = voiceRate;
+    this.voicePitch = voicePitch;
+    this.voiceContour = voiceContour;
+
     this.loops = glob.sync(`${__dirname}/loops/${this.music}`);
     if (spotifyClientId && spotifyClientSecret) {
       this.spotify = new Spotify({
@@ -402,19 +198,93 @@ class FieriFiction {
     );
     return response;
   }
+
+  async getVoices() {
+    const synthesizer = new speachSdk.SpeechSynthesizer(this.speechConfig);
+    const { voices } = await synthesizer.getVoicesAsync();
+    return voices.filter((voice) => voice.locale.startsWith('en-'));
+  }
+
+  async getVoice() {
+    const voices = await this.getVoices();
+    const genderMap = { female: 1, male: 2 };
+    let useVoices = voices;
+
+    if (this.voiceName) {
+      const voice = voices.find(
+        (voice) =>
+          voice.shortName === this.voiceName ||
+          voice.localName === this.voiceName
+      );
+      if (voice) {
+        return voice.shortName;
+      } else {
+        console.error(`⚠️  Could not find voice ${this.voiceName}`);
+      }
+    }
+
+    if (this.voiceStyle) {
+      useVoices = useVoices.filter(
+        (voice) => voice.styleList.indexOf(this.voiceStyle) !== -1
+      );
+      console.log(
+        `☕️ Filtered down to ${useVoices.length} voices based on style ${this.voiceStyle}.`
+      );
+    }
+
+    if (this.voiceGender) {
+      if (!genderMap[this.voiceGender]) {
+        console.error(`⚠️ Gender ${this.voiceGender} not supported.`);
+      } else {
+        useVoices = useVoices.filter(
+          (voice) => voice.gender === genderMap[this.voiceGender]
+        );
+        console.log(
+          `☕️ Filtered down to ${useVoices.length} voices based on gender ${this.voiceGender}.`
+        );
+      }
+    }
+
+    if (useVoices.length === 0) {
+      console.error(
+        '⚠️  Filtered down to zero voices. Using the full set instead.'
+      );
+      useVoices = voices;
+    }
+
+    return sample(useVoices).shortName;
+  }
+
   async textToSpeech(text, output) {
     console.log('\n🕋 Synthesizing');
     const input = this.replacements(text);
-
-    const { name, code, region } = sample(VOICES);
-    this.speechConfig.speechSynthesisLanguage = code;
-    this.speechConfig.speechSynthesisVoiceName = name;
-    console.log(`\n🕋 Voice: ${name} / ${code} / ${region}`);
-
+    const voice = await this.getVoice();
+    console.log(`\n🕋 Voice: ${voice}`);
     const synthesizer = new speachSdk.SpeechSynthesizer(this.speechConfig);
+    const textString = speachSdk.SpeechSynthesizer.XMLEncode(input);
+    const rate = this.voiceRate ? ` rate="${this.voiceRate}"` : '';
+    const pitch = this.voicePitch ? ` pitch="${this.voicePitch}"` : '';
+    const contour = this.voiceContour ? ` contour="${this.voiceContour}"` : '';
+    const style = this.voiceStyle ? ` style="${this.voiceStyle}"` : '';
+    let prosodyStart = '';
+    let prosodyEnd = '';
+
+    if (rate || pitch || contour) {
+      prosodyStart = `<prosody${rate}${pitch}${contour}>`;
+      prosodyEnd = '</prosody>';
+    }
+
+    const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
+  <voice name="${voice}">
+    <mstts:express-as${style}>${prosodyStart}${textString}${prosodyEnd}</mstts:express-as>
+  </voice>
+</speak>`;
+
+    console.log(`\n${ssml}`);
+
     await new Promise((resolve, reject) => {
-      synthesizer.speakTextAsync(
-        input,
+      synthesizer.speakSsmlAsync(
+        ssml,
         (result) => {
           synthesizer.close();
           writeFileSync(output, result.audioData);
@@ -431,6 +301,7 @@ class FieriFiction {
         }
       );
     });
+
     return output;
   }
 
@@ -507,6 +378,7 @@ class FieriFiction {
           query: `${this.songPrefix} ${query} ${this.songPostfix}`.trim(),
           type: 'track',
         });
+        console.log({ reuslts });
         items = result.tracks.items;
       }
       const relevantItems = items.filter((item) => !!item.preview_url);

@@ -32,9 +32,30 @@ const {
   MICROSOFT_AZURE_SPEECH_TOKEN,
   MICROSOFT_AZURE_SPEECH_REGION,
 } = process.env;
-const { mp3, gif, loop, text, output, nomusic, story, searchSong } = argv;
+const {
+  mp3,
+  gif,
+  loop,
+  text,
+  output,
+  nomusic,
+  story,
+  searchSong,
+  voice,
+  rate,
+  style,
+  gender,
+  pitch,
+  contour,
+} = argv;
 
 const ff = new FieriFiction({
+  voiceName: voice,
+  voiceStyle: style,
+  voiceGender: gender,
+  voicePitch: pitch,
+  voiceRate: rate,
+  voiceContour: contour,
   spotifyClientId: SPOTIFY_CLIENT_ID,
   spotifyClientSecret: SPOTIFY_CLIENT_SECRET,
   textGeneratorUrl: POST_TEXT_GENERATOR_URL,
