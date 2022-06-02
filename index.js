@@ -10,7 +10,7 @@ const {
 } = require('fs');
 const { exec } = require('shelljs');
 const { glob } = require('glob');
-const { sample, truncate } = require('lodash');
+const { sample, truncate, map, uniq, flatten, range } = require('lodash');
 const deepai = require('deepai');
 const speachSdk = require('microsoft-cognitiveservices-speech-sdk');
 
@@ -41,6 +41,8 @@ class FieriFiction {
     voiceContour,
     voicePitch,
     voiceRate,
+    voiceLanguage = 'en-',
+    voices = 1,
   } = {}) {
     this.client = tumblr.createClient({
       token: tumblrTokenKey,
@@ -64,6 +66,8 @@ class FieriFiction {
     this.voiceRate = voiceRate;
     this.voicePitch = voicePitch;
     this.voiceContour = voiceContour;
+    this.voiceLanguage = voiceLanguage;
+    this.voices = voices;
 
     this.loops = glob.sync(`${__dirname}/loops/${this.music}`);
     if (spotifyClientId && spotifyClientSecret) {
@@ -200,48 +204,71 @@ class FieriFiction {
   }
 
   async getVoices() {
+    if (this.voiceList) {
+      return this.voiceList;
+    }
     const synthesizer = new speachSdk.SpeechSynthesizer(this.speechConfig);
     const { voices } = await synthesizer.getVoicesAsync();
-    return voices.filter((voice) => voice.locale.startsWith('en-'));
+    this.voiceList = voices.filter((voice) =>
+      voice.locale.startsWith(this.voiceLanguage)
+    );
+
+    const styles = uniq(flatten(map(this.voiceList, 'styleList')));
+    console.log(`\n👨‍🎤 Available styles: `, styles);
+
+    return this.voiceList;
   }
 
-  async getVoice() {
+  async getVoice({ style, name, gender }) {
     const voices = await this.getVoices();
+    let returnStyle = style;
+
     const genderMap = { female: 1, male: 2 };
     let useVoices = voices;
 
-    if (this.voiceName) {
-      const voice = voices.find(
-        (voice) =>
-          voice.shortName === this.voiceName ||
-          voice.localName === this.voiceName
+    if (name) {
+      useVoices = voices.filter(
+        (voice) => voice.shortName === name || voice.localName === name
       );
-      if (voice) {
-        return voice.shortName;
-      } else {
-        console.error(`⚠️  Could not find voice ${this.voiceName}`);
+      if (useVoices.length === 0) {
+        console.error(`⚠️  Could not find voice ${name}`);
+        useVoices = voices;
       }
     }
 
-    if (this.voiceStyle) {
+    if (style) {
+      const preStyleFilter = useVoices;
       useVoices = useVoices.filter(
-        (voice) => voice.styleList.indexOf(this.voiceStyle) !== -1
+        (voice) => voice.styleList.indexOf(style) !== -1
       );
       console.log(
-        `☕️ Filtered down to ${useVoices.length} voices based on style ${this.voiceStyle}.`
+        `☕️ Filtered down to ${useVoices.length} voices based on style ${style}.`
       );
+      if (useVoices.length === 0) {
+        console.error(
+          '⚠️  Filtered down to zero voices. Removing style filter.'
+        );
+        useVoices = preStyleFilter;
+      }
     }
 
-    if (this.voiceGender) {
-      if (!genderMap[this.voiceGender]) {
-        console.error(`⚠️ Gender ${this.voiceGender} not supported.`);
+    if (gender) {
+      if (!genderMap[gender]) {
+        console.error(`⚠️ Gender ${gender} not supported.`);
       } else {
+        const preGenderFilter = useVoices;
         useVoices = useVoices.filter(
-          (voice) => voice.gender === genderMap[this.voiceGender]
+          (voice) => voice.gender === genderMap[gender]
         );
         console.log(
-          `☕️ Filtered down to ${useVoices.length} voices based on gender ${this.voiceGender}.`
+          `☕️ Filtered down to ${useVoices.length} voices based on gender ${gender}.`
         );
+        if (useVoices.length === 0) {
+          console.error(
+            '⚠️  Filtered down to zero voices. Removing gender filter.'
+          );
+          useVoices = preGenderFilter;
+        }
       }
     }
 
@@ -252,31 +279,73 @@ class FieriFiction {
       useVoices = voices;
     }
 
-    return sample(useVoices).shortName;
+    console.log(`\n🧑‍🎤 Picking one of these`, map(useVoices, 'shortName'));
+    const returnVoice = sample(useVoices);
+
+    if (
+      !returnStyle &&
+      returnVoice.styleList &&
+      returnVoice.styleList.length > 0
+    ) {
+      console.log(
+        `\n👨‍🎤 Voice ${returnVoice.shortName} has styles`,
+        returnVoice.styleList
+      );
+      returnStyle = sample(returnVoice.styleList);
+    }
+
+    return {
+      voice: returnVoice.shortName,
+      style: returnStyle,
+    };
   }
 
   async textToSpeech(text, output) {
+    const files = range(1, this.voices + 1).map((i) => `${i} - ${output}`);
+
+    for (let file of files) {
+      await this.createTextToSpeech(text, file);
+    }
+
+    const is = files.map((file) => `-i "${file}"`);
+    const as = files.map((_file, i) => `[${i}:a]`);
+    const cmd = `ffmpeg ${is.join(' ')} -filter_complex "${as.join(
+      ''
+    )}amix=inputs=${this.voices}[a]" -map "[a]" -ac 2 -y "${output}"`;
+
+    this.execCmd(cmd);
+
+    for (let file of files) {
+      unlinkSync(file);
+    }
+  }
+
+  async createTextToSpeech(text, output) {
     console.log('\n🕋 Synthesizing');
     const input = this.replacements(text);
-    const voice = await this.getVoice();
-    console.log(`\n🕋 Voice: ${voice}`);
+    const { voice, style } = await this.getVoice({
+      name: this.voiceName,
+      style: this.voiceStyle,
+      gender: this.voiceGender,
+    });
+    console.log(`\n🎙️  Voice: ${voice}${style ? `, style: ${style}` : ''}`);
     const synthesizer = new speachSdk.SpeechSynthesizer(this.speechConfig);
     const textString = speachSdk.SpeechSynthesizer.XMLEncode(input);
-    const rate = this.voiceRate ? ` rate="${this.voiceRate}"` : '';
-    const pitch = this.voicePitch ? ` pitch="${this.voicePitch}"` : '';
-    const contour = this.voiceContour ? ` contour="${this.voiceContour}"` : '';
-    const style = this.voiceStyle ? ` style="${this.voiceStyle}"` : '';
+    const sRate = this.voiceRate ? ` rate="${this.voiceRate}"` : '';
+    const sPitch = this.voicePitch ? ` pitch="${this.voicePitch}"` : '';
+    const sContour = this.voiceContour ? ` contour="${this.voiceContour}"` : '';
+    const sStyle = style ? ` style="${style}"` : '';
     let prosodyStart = '';
     let prosodyEnd = '';
 
-    if (rate || pitch || contour) {
-      prosodyStart = `<prosody${rate}${pitch}${contour}>`;
+    if (sRate || sPitch || sContour) {
+      prosodyStart = `<prosody${sRate}${cPitch}${cContour}>`;
       prosodyEnd = '</prosody>';
     }
 
     const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
   <voice name="${voice}">
-    <mstts:express-as${style}>${prosodyStart}${textString}${prosodyEnd}</mstts:express-as>
+    <mstts:express-as${sStyle}>${prosodyStart}${textString}${prosodyEnd}</mstts:express-as>
   </voice>
 </speak>`;
 

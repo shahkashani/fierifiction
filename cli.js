@@ -47,6 +47,8 @@ const {
   gender,
   pitch,
   contour,
+  voices,
+  language,
 } = argv;
 
 const ff = new FieriFiction({
@@ -56,6 +58,8 @@ const ff = new FieriFiction({
   voicePitch: pitch,
   voiceRate: rate,
   voiceContour: contour,
+  voiceLanguage: language,
+  voices: voices ? parseInt(voices, 10) : 1,
   spotifyClientId: SPOTIFY_CLIENT_ID,
   spotifyClientSecret: SPOTIFY_CLIENT_SECRET,
   textGeneratorUrl: POST_TEXT_GENERATOR_URL,
