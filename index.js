@@ -8,6 +8,7 @@ const {
   createReadStream,
   createWriteStream,
 } = require('fs');
+const { parse } = require('path');
 const { exec } = require('shelljs');
 const { glob } = require('glob');
 const { sample, truncate, map, uniq, flatten, range } = require('lodash');
@@ -301,7 +302,14 @@ class FieriFiction {
   }
 
   async textToSpeech(text, output) {
-    const files = range(1, this.voices + 1).map((i) => `${i} - ${output}`);
+    if (this.voices < 2) {
+      return this.createTextToSpeech(text, output);
+    }
+
+    const { dir, name } = parse(output);
+    const files = range(1, this.voices + 1).map(
+      (i) => `${dir ? `${dir}/` : ''}${i} - ${name}`
+    );
 
     for (let file of files) {
       await this.createTextToSpeech(text, file);
