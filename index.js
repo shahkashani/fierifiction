@@ -1,5 +1,4 @@
 const tumblr = require('tumblr.js');
-const request = require('request-promise');
 const Spotify = require('node-spotify-api');
 const {
   writeFileSync,
@@ -14,8 +13,32 @@ const { glob } = require('glob');
 const { sample, truncate, map, uniq, flatten, range } = require('lodash');
 const deepai = require('deepai');
 const speachSdk = require('microsoft-cognitiveservices-speech-sdk');
+const https = require('https');
 
 const ATTEMPS = 3;
+
+function download(url, dest) {
+  var file = createWriteStream(dest);
+  return new Promise((resolve, reject) => {
+    var responseSent = false; // flag to make sure that response is sent only once.
+    https
+      .get(url, (response) => {
+        response.pipe(file);
+        file.on('finish', () => {
+          file.close(() => {
+            if (responseSent) return;
+            responseSent = true;
+            resolve();
+          });
+        });
+      })
+      .on('error', (err) => {
+        if (responseSent) return;
+        responseSent = true;
+        reject(err);
+      });
+  });
+}
 
 class FieriFiction {
   constructor({
@@ -463,17 +486,12 @@ class FieriFiction {
       }
       const { preview_url: url } = sample(relevantItems);
       try {
-        const response = await request({
-          url,
-          encoding: null,
-        });
-        const buffer = Buffer.from(response, 'utf8');
-        writeFileSync(filename, buffer);
+        await download(url, filename);
         return filename;
       } catch (err) {
         console.log('Error saving song', err);
       }
-      return preview_url;
+      return url;
     } catch (error) {
       console.error(error);
       console.log(`🎷 Grabbing a random track...`);
