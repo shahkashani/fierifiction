@@ -15,16 +15,16 @@
   "homepage": "https://github.com/shahkashani/fierifiction#readme",
   "dependencies": {
     "bad-words": "^3.0.4",
-    "deepai": "^1.0.17",
-    "dotenv": "^8.0.0",
-    "glob": "^7.1.4",
+    "deepai": "^1.0.23",
+    "dotenv": "^8.6.0",
+    "glob": "^7.2.3",
     "lodash": "^4.17.21",
-    "microsoft-cognitiveservices-speech-sdk": "^1.21.1",
+    "microsoft-cognitiveservices-speech-sdk": "^1.32.0",
     "node-spotify-api": "^1.1.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
-    "shelljs": "^0.8.3",
+    "shelljs": "^0.8.5",
     "tumblr.js": "^3.0.0",
-    "yargs": "^13.2.4"
+    "yargs": "^13.3.2"
   }
 }
