@@ -20,8 +20,8 @@
     "glob": "^7.2.3",
     "lodash": "^4.17.21",
     "microsoft-cognitiveservices-speech-sdk": "^1.32.0",
-    "node-spotify-api": "^1.1.1",
     "shelljs": "^0.8.5",
+    "spotify-web-api-node": "^5.0.2",
     "tumblr.js": "^3.0.0",
     "yargs": "^13.3.2"
   }

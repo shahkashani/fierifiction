@@ -1,5 +1,4 @@
 const tumblr = require('tumblr.js');
-const Spotify = require('node-spotify-api');
 const {
   writeFileSync,
   readFileSync,
@@ -14,6 +13,7 @@ const { sample, truncate, map, uniq, flatten, range } = require('lodash');
 const deepai = require('deepai');
 const speachSdk = require('microsoft-cognitiveservices-speech-sdk');
 const https = require('https');
+const SpotifyWebApi = require('spotify-web-api-node');
 
 const ATTEMPS = 3;
 
@@ -93,9 +93,9 @@ class FieriFiction {
 
     this.loops = glob.sync(`${__dirname}/loops/${this.music}`);
     if (spotifyClientId && spotifyClientSecret) {
-      this.spotify = new Spotify({
-        id: spotifyClientId,
-        secret: spotifyClientSecret,
+      this.spotify = new SpotifyWebApi({
+        clientId: spotifyClientId,
+        clientSecret: spotifyClientSecret,
       });
     }
     if (this.textGeneratorApiKey) {
@@ -444,10 +444,14 @@ class FieriFiction {
 
   async getSong(story) {
     const random = sample(this.loops);
+
     if (!this.spotify || !story) {
       console.log(`🎷 Grabbing a random track...`);
       return random;
     }
+
+    const tokenResult = await this.spotify.clientCredentialsGrant();
+    this.spotify.setAccessToken(tokenResult.body.access_token);
 
     const filename = `temp-${this.getQuery(story)
       .toLowerCase()
@@ -472,12 +476,11 @@ class FieriFiction {
       while (attempts.length > 0 && items.length === 0) {
         let query = attempts.shift();
         console.log(`🎷 Searching for "${query}"...`);
-        const result = await this.spotify.search({
-          query: `${this.songPrefix} ${query} ${this.songPostfix}`.trim(),
-          type: 'track',
-        });
-        console.log({ result });
-        items = result.tracks.items;
+        const result = await this.spotify.searchTracks(
+          `${this.songPrefix} ${query} ${this.songPostfix}`.trim()
+        );
+        console.log(result.body.tracks);
+        items = result.body.tracks.items;
       }
       const relevantItems = items.filter((item) => !!item.preview_url);
       if (relevantItems.length === 0) {
