@@ -31,6 +31,11 @@ const {
   POST_TEXT_GENERATOR_API_KEY,
   MICROSOFT_AZURE_SPEECH_TOKEN,
   MICROSOFT_AZURE_SPEECH_REGION,
+  TUMBLR_CONSUMER_KEY,
+  TUMBLR_CONSUMER_SECRET,
+  TUMBLR_ACCESS_TOKEN_KEY,
+  TUMBLR_ACCESS_TOKEN_SECRET,
+  TUMBLR_BLOG_NAME,
 } = process.env;
 const {
   mp3,
@@ -49,6 +54,8 @@ const {
   contour,
   voices,
   language,
+  post,
+  mp4,
 } = argv;
 
 const ff = new FieriFiction({
@@ -66,10 +73,19 @@ const ff = new FieriFiction({
   textGeneratorApiKey: POST_TEXT_GENERATOR_API_KEY,
   microsoftAzureSpeechToken: MICROSOFT_AZURE_SPEECH_TOKEN,
   microsoftAzureSpeechRegion: MICROSOFT_AZURE_SPEECH_REGION,
+  tumblrConsumerKey: TUMBLR_CONSUMER_KEY,
+  tumblrConsumerSecret: TUMBLR_CONSUMER_SECRET,
+  tumblrTokenKey: TUMBLR_ACCESS_TOKEN_KEY,
+  tumblrTokenSecret: TUMBLR_ACCESS_TOKEN_SECRET,
+  tumblrBlogName: TUMBLR_BLOG_NAME,
   moderation: new ModerationWords(),
 });
 
 (async function () {
+  if (post && mp4 && text) {
+    await ff.createVideoPost(text, mp4);
+    return;
+  }
   if (searchSong) {
     console.log(await ff.getSong(searchSong));
   }

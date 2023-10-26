@@ -22,7 +22,7 @@
     "microsoft-cognitiveservices-speech-sdk": "^1.32.0",
     "shelljs": "^0.8.5",
     "spotify-web-api-node": "^5.0.2",
-    "tumblr.js": "^3.0.0",
+    "tumblr.js": "^4.0.1",
     "yargs": "^13.3.2"
   }
 }

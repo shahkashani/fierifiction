@@ -67,12 +67,12 @@ class FieriFiction {
     voiceLanguage = 'en-',
     voices = 1,
   } = {}) {
+    /** @type {tumblr.Client} */
     this.client = tumblr.createClient({
       token: tumblrTokenKey,
       token_secret: tumblrTokenSecret,
       consumer_key: tumblrConsumerKey,
       consumer_secret: tumblrConsumerSecret,
-      returnPromises: true,
     });
     this.songPrefix = songPrefix;
     this.songPostfix = songPostfix;
@@ -205,24 +205,6 @@ class FieriFiction {
       `convert ${escapedFilenames.join(' ')} -append "${combinedFileName}"`
     );
     return combinedFileName;
-  }
-
-  async reblogPost(text, postId, blogName, tags = []) {
-    console.log('\n🔄 Reblogging text post');
-    const postInfo = await this.client.blogPosts(blogName, {
-      id: postId,
-    });
-    const reblogKey = postInfo.posts[0].reblog_key;
-    const response = await this.client.reblogPost(this.blogName, {
-      id: postId,
-      tags: tags.join(','),
-      reblog_key: reblogKey,
-      comment: text,
-    });
-    console.log(
-      `👀 Go check it out at https://${this.blogName}.tumblr.com/post/${response.id}`
-    );
-    return response;
   }
 
   async getVoices() {
@@ -385,7 +367,6 @@ class FieriFiction {
         ssml,
         (result) => {
           synthesizer.close();
-          writeFileSync(output, result.audioData);
           const writeStream = createWriteStream(output);
           writeStream.write(Buffer.from(result.audioData), 'binary');
           writeStream.on('finish', () => {
@@ -502,6 +483,28 @@ class FieriFiction {
     }
   }
 
+  async createVideoPost(
+    text,
+    video,
+    tags = [],
+    sourceUrl = undefined,
+    publishState = undefined
+  ) {
+    const videoContent = {
+      type: 'video',
+      media: createReadStream(video),
+    };
+    const textContent = { type: 'text', text };
+    const response = await this.client.createPost(this.blogName, {
+      tags,
+      state: publishState,
+      source_url: sourceUrl,
+      content: [videoContent, textContent],
+    });
+
+    return response;
+  }
+
   async generateAndShareVideo(story, image, tags, sourceUrl, publishState) {
     const wav = `${image}.wav`;
     const mp4 = `${image}.mp4`;
@@ -510,27 +513,23 @@ class FieriFiction {
     this.createVideo(image, wav, mp4);
     await this.addSoundtrack(image, mp4, story);
 
-    const video = readFileSync(mp4);
-    const caption = story.replace(/\n/g, '<br />\n');
-    const tagStr = tags.join(',');
-
     console.log('Posting', {
-      tagStr,
+      tags,
       sourceUrl,
-      caption,
+      story,
       publishState,
     });
 
-    const videoPost = await this.client.createVideoPost(this.blogName, {
-      caption,
-      data64: video.toString('base64'),
-      tags: tagStr,
-      source_url: sourceUrl,
-      state: publishState || 'published',
-    });
+    const result = await this.createVideoPost(
+      story,
+      mp4,
+      tags,
+      sourceUrl,
+      publishState
+    );
 
     console.log(
-      `👀 Go check it out at https://${this.blogName}.tumblr.com/post/${videoPost.id}`
+      `👀 Go check it out at https://${this.blogName}.tumblr.com/post/${result.id}`
     );
     console.log('👋 Wrapping up!');
     unlinkSync(wav);
@@ -545,49 +544,11 @@ class FieriFiction {
     };
   }
 
-  async makeNpfRequestForm(apiPath, formData, body) {
-    return new Promise((resolve, reject) => {
-      this.client.request.post(
-        {
-          ...this.getBaseParams(apiPath),
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          formData: {
-            json: JSON.stringify(body),
-            ...formData,
-          },
-        },
-        (err, _response, body) => {
-          if (err) {
-            return reject(err);
-          }
-          try {
-            body = JSON.parse(body);
-          } catch (e) {
-            return reject(`Malformed Response: ${body}`);
-          }
-          resolve(body);
-        }
-      );
-    });
-  }
-
   async createVideoPostNpf(videos, tags, text, sourceUrl, publishState) {
-    const formData = videos.reduce((memo, video, index) => {
-      memo[`video${index}`] = createReadStream(video);
-      return memo;
-    }, {});
-
-    const videoContent = videos.map((_video, index) => {
+    const videoContent = videos.map((video) => {
       return {
         type: 'video',
-        media: [
-          {
-            type: 'video/mp4',
-            identifier: `video${index}`,
-          },
-        ],
+        media: createReadStream(video),
       };
     });
 
@@ -599,7 +560,7 @@ class FieriFiction {
       `/v2/blog/${this.blogName}/posts`,
       formData,
       {
-        tags: tags.join(','),
+        tags,
         state: publishState || 'published',
         source_url: sourceUrl,
         content: [...videoContent, ...textBlocks],
@@ -641,25 +602,8 @@ class FieriFiction {
     } catch (err) {
       console.error(err);
       if (reblogInfo && story) {
-        console.warn(`💥 Trying to reblog instead as a last-ditch effort`);
-        await this.reblogPost(
-          story,
-          reblogInfo.postId,
-          reblogInfo.blogName,
-          tags
-        );
+        console.warn(`💥 Giving up`);
       }
-    }
-  }
-
-  async postText(captions, postId, blogName, tags = [], useStory = false) {
-    try {
-      const story = useStory
-        ? captions.join(' ')
-        : await this.generateStory(captions);
-      await this.reblogPost(story, postId, blogName, tags);
-    } catch (err) {
-      console.error(err);
     }
   }
 }
