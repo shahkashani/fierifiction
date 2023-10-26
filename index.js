@@ -24,7 +24,6 @@ class FieriFiction {
     tumblrTokenKey = null,
     tumblrTokenSecret = null,
     tumblrBlogName = null,
-    textGeneratorUrl = null,
     audioGeneratorUrl = null,
     spotifyClientId = null,
     spotifyClientSecret = null,
@@ -56,7 +55,6 @@ class FieriFiction {
     this.songPostfix = songPostfix;
     this.moderation = moderation;
     this.blogName = tumblrBlogName;
-    this.textGeneratorUrl = textGeneratorUrl;
     this.textGeneratorApiKey = textGeneratorApiKey;
     this.audioGeneratorUrl = audioGeneratorUrl;
     this.textLength = textLength;

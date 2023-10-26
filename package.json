@@ -21,8 +21,8 @@
     "lodash": "^4.17.21",
     "microsoft-cognitiveservices-speech-sdk": "^1.21.1",
     "node-spotify-api": "^1.1.1",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.4",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
     "shelljs": "^0.8.3",
     "tumblr.js": "^3.0.0",
     "yargs": "^13.2.4"
